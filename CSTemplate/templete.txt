@@ -1,0 +1,83 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using DataBase.AppData;
+
+namespace DataBase
+{
+    public partial class $classname$ : Base
+    {
+        /// <summary>
+        /// 自定义构造函数
+        /// </summary>
+        public $classname$() { }
+
+        /// <summary>
+        /// 新增$tablemodel$信息 0 成功 1失败
+        /// </summary>
+        /// <param name="model">导航信息</param>
+        public void InsertDataTo$tablemodel$Table($tablemodel$ model)
+        {
+            this.datacontext.$tablemodel$.InsertOnSubmit(model);
+            this.datacontext.SubmitChanges();
+        }
+
+        /// <summary>
+        /// 编辑$tablemodel$信息 0 成功 1失败
+        /// </summary>
+        /// <param name="model">导航信息</param>
+        public void UpdateDataTo$tablemodel$Table($tablemodel$ model)
+        {
+            this.datacontext.SubmitChanges();
+        }
+
+        /// <summary>
+        /// 根据$tablemodel$ id获取$tablemodel$信息
+        /// </summary>
+        /// <param name="id">导航Id</param>
+        /// <returns></returns>
+        public $tablemodel$ GetDataById(int? id)
+        {
+            return this.datacontext.$tablemodel$.Where(p => p.id == id).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// 根据id删除 $tablemodel$信息
+        /// </summary>
+        /// <param name="id"></param>
+        public void DeleteById(int? id)
+        {
+			//查找数据
+            $tablemodel$ navigation = this.datacontext.$tablemodel$.Where(p => p.id == id).FirstOrDefault();
+            this.datacontext.$tablemodel$.DeleteOnSubmit(navigation);
+            this.datacontext.SubmitChanges();
+        }
+
+        /// <summary>
+        /// 获取$tablemodel$表列表信息 不带分页
+        /// </summary>
+        /// <returns>返回导航信息</returns>
+        public List<$tablemodel$> GetDataList()
+        {
+            List<$tablemodel$> list = new List<$tablemodel$>();
+            list = this.datacontext.$tablemodel$.ToList();
+            return list;
+        }
+
+        /// <summary>
+        /// 获取$tablemodel$表列表信息 带分页
+        /// </summary>
+        /// <param name="page">页数</param>
+        /// <param name="size">当前页数据量大小</param>
+        /// <returns>返回数据集</returns>
+        public List<$tablemodel$> GetDataList(int? page, int? size)
+        {
+            int index = (int)page;
+            int rows = (int)size;
+            List<$tablemodel$> list = new List<$tablemodel$>();
+            list = this.datacontext.$tablemodel$.Skip(rows * (index - 1)).Take(rows).ToList();
+            return list;
+        }
+    }
+}
