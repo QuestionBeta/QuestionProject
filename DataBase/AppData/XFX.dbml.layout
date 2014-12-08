@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 16.5" name="XFX">
+  <DataContextMoniker Name="/XFXDataContext" />
+  <nestedChildShapes>
+    <classShape Id="a906b657-d0ed-4563-8b19-504de2ff41ee" absoluteBounds="6.875, 5.125, 2, 1.5373050944010416">
+      <DataClassMoniker Name="/XFXDataContext/Category" />
+      <nestedChildShapes>
+        <elementListCompartment Id="f20b2d71-13e5-4e37-9475-b1d4a9becc7b" absoluteBounds="6.89, 5.585, 1.9700000000000002, 0.97730509440104174" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="9429fd7f-ff21-4e88-b4fb-4b2feca79204" absoluteBounds="5.125, 6, 2, 1.7220992024739581">
+      <DataClassMoniker Name="/XFXDataContext/Login" />
+      <nestedChildShapes>
+        <elementListCompartment Id="bd42b319-9bd1-4786-af14-6eea404d03a6" absoluteBounds="5.14, 6.46, 1.9700000000000002, 1.1620992024739583" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="46cef0ce-1b6b-4599-b938-8e6b81f4842e" absoluteBounds="2.375, 4.5, 2, 2.4612756347656251">
+      <DataClassMoniker Name="/XFXDataContext/Menu" />
+      <nestedChildShapes>
+        <elementListCompartment Id="6e21793f-797d-45d8-a083-737aacdf282c" absoluteBounds="2.3899999999999997, 4.96, 1.9700000000000002, 1.901275634765625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="3071c4f1-b76c-456c-8eef-b57cc219e718" absoluteBounds="5.125, 8.25, 2, 2.6460697428385416">
+      <DataClassMoniker Name="/XFXDataContext/User" />
+      <nestedChildShapes>
+        <elementListCompartment Id="a47c2a5c-56e1-4e30-8fa5-02aea3663e05" absoluteBounds="5.14, 8.71, 1.9700000000000002, 2.0860697428385415" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(6.125 : 8.25); (6.125 : 7.72209920247396)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/XFXDataContext/User/User_Login" />
+      <nodes>
+        <classShapeMoniker Id="3071c4f1-b76c-456c-8eef-b57cc219e718" />
+        <classShapeMoniker Id="9429fd7f-ff21-4e88-b4fb-4b2feca79204" />
+      </nodes>
+    </associationConnector>
+    <classShape Id="46694958-ad93-4b9a-9e80-97102cec2729" absoluteBounds="2.25, 8.75, 2, 2.6460697428385416">
+      <DataClassMoniker Name="/XFXDataContext/XFX_Bug" />
+      <nestedChildShapes>
+        <elementListCompartment Id="3956668f-e271-4237-8cd4-7a4d84eafb30" absoluteBounds="2.2649999999999997, 9.21, 1.9700000000000002, 2.0860697428385415" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(8.03125 : 6.66230509440104); (8.03125 : 11.1773197428385); (4.25 : 11.1773197428385)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/XFXDataContext/Category/Category_XFX_Bug" />
+      <nodes>
+        <classShapeMoniker Id="a906b657-d0ed-4563-8b19-504de2ff41ee" />
+        <classShapeMoniker Id="46694958-ad93-4b9a-9e80-97102cec2729" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(5.125 : 9.82303487141927); (4.25 : 9.82303487141927)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/XFXDataContext/User/User_XFX_Bug" />
+      <nodes>
+        <classShapeMoniker Id="3071c4f1-b76c-456c-8eef-b57cc219e718" />
+        <classShapeMoniker Id="46694958-ad93-4b9a-9e80-97102cec2729" />
+      </nodes>
+    </associationConnector>
+    <classShape Id="71dde924-dc6d-4457-93cf-5364f8148f29" absoluteBounds="4.875, 12.625, 2, 1.3525109863281251">
+      <DataClassMoniker Name="/XFXDataContext/XFX_Dictionary" />
+      <nestedChildShapes>
+        <elementListCompartment Id="a5080889-5118-4a7f-b746-0bfd5d9ca380" absoluteBounds="4.89, 13.085, 1.9700000000000002, 0.792510986328125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="5c4b1a36-9ef3-4145-943b-18a29675f51a" absoluteBounds="5.25, 14.75, 2, 1.5373050944010416">
+      <DataClassMoniker Name="/XFXDataContext/XFX_DictionaryValue" />
+      <nestedChildShapes>
+        <elementListCompartment Id="dc10b7cf-df22-46bc-9f90-3e168fefa074" absoluteBounds="5.265, 15.21, 1.9700000000000002, 0.97730509440104174" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(6.0625 : 13.9775109863281); (6.0625 : 14.75)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/XFXDataContext/XFX_Dictionary/XFX_Dictionary_XFX_DictionaryValue" />
+      <nodes>
+        <classShapeMoniker Id="71dde924-dc6d-4457-93cf-5364f8148f29" />
+        <classShapeMoniker Id="5c4b1a36-9ef3-4145-943b-18a29675f51a" />
+      </nodes>
+    </associationConnector>
+    <classShape Id="818f07a2-490d-4b79-829e-cd9ba911fb35" absoluteBounds="1, 13.375, 2, 1.5373050944010416">
+      <DataClassMoniker Name="/XFXDataContext/XFX_Navigation" />
+      <nestedChildShapes>
+        <elementListCompartment Id="1dad11cd-d0fa-41b4-a198-e5a3e777cfc5" absoluteBounds="1.0149999999999997, 13.835, 1.9700000000000002, 0.97730509440104174" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+  </nestedChildShapes>
+</ordesignerObjectsDiagram>
