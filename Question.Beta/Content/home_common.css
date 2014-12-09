@@ -1,0 +1,156 @@
+﻿/* File Created: 十一月 25, 2014 */
+html,body{ background: :#000};
+	body {
+    font-family: "Helvetica Neue",Helvetica,Microsoft Yahei,Hiragino Sans GB,WenQuanYi Micro Hei,sans-serif;
+    background: #eee;
+}
+input[type=button],button
+{
+    padding:8px;
+}
+.nav
+{
+    /*width:40%;*/
+}
+.nav li a
+{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    word-break: keep-all;
+}
+#useArea li a
+{
+    line-height: 10px;
+    margin: 5px;
+    width: 80px;
+}
+#useArea li a:hover
+{
+    background: #3071a9;
+    opacity:1;
+}
+#useArea li .btn-success:hover
+{
+    background: #449d44;
+    opacity:1;
+}
+.navbar-static-top
+{
+    background: #000;
+}
+.bs-docs-footer {
+    border-top: 1px solid #e5e5e5;
+    color: #777;
+    margin-top: 30px;
+    padding-bottom: 40px;
+    padding-top: 40px;
+    text-align: center;
+    background: #fff;
+}
+.col-md-9
+{
+    border-right:1px solid #eaeaea;
+    border-left:1px solid #eaeaea;
+    min-height:300px;
+}
+.row
+{
+    border-right:1px solid #eaeaea;
+}
+.content
+{
+    background: #fff;
+}
+.container
+{
+    width: 1170px;
+}
+.thumbnail
+{
+    /*width: 30%;*/
+}
+.col-lg-3
+{
+    width: 25%;
+}
+.col-sm-6
+{
+    padding-right: 0px;
+}
+.login_form {
+    background-color: #fff;
+    border-color: #ddd;
+    border-radius: 4px 4px 0 0;
+    border-width: 1px;
+    box-shadow: none;
+    margin-left: 0;
+    margin-right: 0;
+}
+.login_form:after {
+    color: #959595;
+    font-size: 12px;
+    font-weight: 700;
+    left: 15px;
+    letter-spacing: 1px;
+    position: absolute;
+    text-transform: uppercase;
+    top: 15px;
+}
+.field-validation-error,.check
+{
+    color: Red;
+    float: right;
+    position: absolute;
+    top: 5px;
+    right: -150px;
+    text-align: left;
+    width: 150px;
+}
+.check
+{
+    color: #000;
+    opacity:0.13;
+}
+.control-label
+{
+    width: 150px !important;
+    text-align: right;
+    float: left;	
+    content: '';
+    line-height: 32px;
+}
+.form-control
+{
+    width:300px;
+    clear: both;
+}
+#myform .content
+{
+    float: left;
+}
+.form-group
+{
+    width: 550px;
+}
+.pagination   .currentPage a {
+background-color: #428bca;
+    border-color: #357ebd;
+    color: #fff;
+}
+.caption h3{
+	font-size:14px;
+}
+#pagercontrol{
+float:right;
+}
+.thumbnail
+{
+    max-height:300px;
+    height: 300px;
+}
+.popup_title_c
+{
+    color: #000;
+    font-size: 20px;
+}
