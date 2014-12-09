@@ -1,0 +1,16 @@
+﻿@model List<DataBase.AppData.XFX_Navigation>
+@{
+    Layout = null;
+}
+@{
+    if(Model != null && Model.Count > 0)
+    {
+        foreach(var navigation in Model)
+        {
+            <li>           
+                <a href = "@navigation.url">@navigation.name</a>
+            </li>
+    
+        }
+    }
+}

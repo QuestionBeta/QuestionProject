@@ -1,0 +1,69 @@
+﻿@{
+    ViewBag.Title = "上传图片";
+    Layout = null;
+}
+<script type="text/javascript" src="@Url.Content("~/Scripts/Question/jquery-1.9.1.min.js")"></script>
+<style>
+    html
+    {
+        width: 40px;
+    }
+    body
+    {
+        width: 50px;
+        height: 30px;
+    }
+    .file-box
+    {
+        position: relative;
+    }
+    .txt
+    {
+        height: 22px;
+        border: 1px solid #cdcdcd;
+        width: 180px;
+    }
+    .btn
+    {
+        background-color: #FFF;
+        border: 1px solid #CDCDCD;
+        width: 50px;
+        height:25px;
+    }
+    .file
+    {
+        position: absolute;
+        top: 0;
+        height: 24px;
+        filter: alpha(opacity:0);
+        opacity: 0;
+    }
+</style>
+<script type="text/javascript">
+    $(function () {
+        var url = '@ViewBag.CurrentID';
+        //        if (url != '') {
+        //            alert(url);
+        //        }
+        //        alert(url);
+        var result = '@ViewBag.Result';
+        if (result != null && result != "" && result != '') {
+            window.parent.document.getElementById('mywins').value = result;
+            window.parent.document.getElementById('mywins').click();
+            window.parent.document.getElementById(url).value = '@ViewBag.Name';
+        }
+    });
+
+    function setHiddenValue(value) {
+        document.getElementById("va").value = value;
+    }
+</script>
+<div class="file-box">
+    @using (Html.BeginForm("GoodsImgUpload", "Goods", FormMethod.Post, new { @id = "uploadform", @enctype = "multipart/form-data" }))
+    {
+        <input type="hidden" id="va" name="va" />
+        <input type='button' class='btn' value='浏览...' />
+        <input type="file" name="fileField" class="file" id="fileField" style="width: 50px;
+            left: 0; position: absolute;" size="28" onchange="window.parent.document.getElementById('url').value=this.value" />
+    }
+</div>

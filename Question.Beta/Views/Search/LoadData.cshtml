@@ -1,0 +1,41 @@
+﻿@model IEnumerable<DataBase.AppData.XFX_Bug>
+@{
+    Layout = null;
+}
+@if (Model != null && Model.Count() > 0)
+{
+    foreach (var bug in Model)
+    {
+    <div style="padding: 5px;border-bottom: 1px solid rgb(234, 234, 234);">
+        <div style="width: 100px;height:100px; float: left; padding: 0px 5px">
+            @if (!string.IsNullOrEmpty(bug.url))
+            {
+                <img src="@bug.url" alt="@bug.title" style="width: 100px; height: 100px" />
+            }
+            else
+            {
+                <img src="/Content/images/not_found.jpg" alt="找不到图片" style="width: 100px; height: 100px" />
+            }
+        </div>
+        <div style="width: 85%; overflow: hidden; text-overflow: ellipsis; word-break: break-all; padding:0 10px; display: block">
+            <div style="line-height: 25px">
+                <a href="@Url.Action("Detail", "Bug", new { @id = bug.id })" target="_blank">@bug.title</a></div>
+            <div style="height: 57px; overflow: hidden; text-overflow: ellipsis; word-break: break-all;
+                display: block; word-wrap: nowrap;">
+                @Html.Raw(bug.description)
+            </div>
+            <div>
+                edit by @bug.User.user_name @bug.User.time</div>
+        </div>
+    </div>
+    }
+    <div style="clear: both">
+    </div>
+    <ul id="pagercontrol" class="pagination" style="float: right; clear: both; padding-right: 10px">@ViewBag.Data</ul>
+}
+else
+{
+    <div style="padding: 5px; text-align: center">
+        对不起，没有找到您要的数据
+    </div>
+}

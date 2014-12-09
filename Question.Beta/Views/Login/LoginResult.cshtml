@@ -1,0 +1,30 @@
+﻿@{
+    ViewBag.Title = "处理结果";
+    Layout = null;
+}
+<link href="@Url.Content("~/Content/home_register.css")" rel="stylesheet" type="text/css" />
+<div  class="global">
+    <div class="content" style="margin-top: 5px;">
+        <dl style="padding: 35px 0; font-size: 1.8em">
+            @if (Model != null)
+            {
+                if (Model == 0)
+                {
+                <dt>
+                    <img src="/Content/images/img/success.png" /></dt>
+                <dd style="color: Red; font: 20px; font-family: Arial">
+                    注册成功 现在去 @Html.ActionLink("登录", "LoginOn")
+                </dd>
+                }
+                else
+                {
+                <dt>
+                    <img src="/Content/images/img/error.png" alt="出错了" /></dt>
+                <dd style="color: Red; font: 20px; font-family: Arial">
+                    注册失败 点击 @Html.ActionLink("返回", "LoginRegister")
+                </dd>
+                }
+            }
+        </dl>
+    </div>
+</div>

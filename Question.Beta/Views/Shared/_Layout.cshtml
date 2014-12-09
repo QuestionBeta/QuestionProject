@@ -1,0 +1,112 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewBag.Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="@Url.Content("~/Content/css/bootstrap.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/home_common.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/jquery.dialog.css")" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="@Url.Content("~/Scripts/Question/jquery-1.9.1.min.js")"></script>
+    <script type="text/javascript">
+        $(function () {
+
+            $('#navigations').load("/Navigation/GetNavigation", null, function () { });
+            $('#loginbtn').bind('click', function () {
+                $.dialog.window('登录', '/Login/LoginOn', '1', false, function () {
+
+                });
+            });
+            $('#registerbtn').bind('click', function () {
+                $.dialog.window('注册', '/Login/LoginRegister', '1', false, function () {
+
+                });
+            });
+
+            $('#loginout123').bind('click', function () {
+                $.dialog.width = "350px";
+
+                $.dialog.confirm('确认信息？', '确认退出？', 1, true, function (re) {
+                    
+                    $("body").load("/Login/LoginOut", null, function () {
+                        var v = document.getElementById("hiv");
+
+                        if (v != "" && v.value == 0) {
+                            $.dialog.alert('提示信息', "退出成功", 1, true, function () {
+                                closeconfirm();
+                                $("body").find("logout1").remove();
+                                location.href = "/";
+                            });
+                        } else {
+                            $.dialog.alert('提示信息', "退出失败", 1, true, function () {
+                                $("body").find("logout1").remove();
+                            });
+                        }
+                    });
+
+                });
+            });
+        });
+
+        function closeWin() {
+            $.dialog._hide("popup_container_window", "overflow_window");
+        }
+        function closeconfirm() {
+            $.dialog._hide("popup_container_confirm", "overflow_confirm");
+        }
+
+        function openAlert(msg) {
+            //alert(msg);
+            $.dialog.width = "300px";
+            $.dialog.alert('提示信息', msg, 1,true, function () {
+                closeWin();
+                location.href = "/";
+            });
+        }
+
+        function submitForm() {
+            //获取form
+            var width = window.parent.document.getElementById("main_frame_01").style.width;
+            width = width.replace('px', '');
+
+            //alert(width);
+            if (parseInt(width) >= 671) {
+                //alert(width);
+                window.parent.document.getElementById("main_frame_01").style = "width:671px;border:none;max-width:671px;min-width:671px;height:290px;min-height:290px;max-height:290px";
+            }
+            //document.getElementById("main_frame_01").style = "max-width:600px;border:none";
+            var frame = window.parent.document.getElementById("main_frame_01").contentWindow;
+            var submitform = null;
+            if (frame != null) {
+                submitform = frame.document.getElementById("myform");
+                submitform.submit();
+            }
+        }
+
+        function registerForm() {
+            //获取form
+            var width = window.parent.document.getElementById("main_frame_01").style.width;
+            width = width.replace('px', '');
+
+            //alert(width);
+            if (parseInt(width) >= 671) {
+                //alert(width);
+                window.parent.document.getElementById("main_frame_01").style = "width:659px;border:none;max-width:659px;min-width:659px;height:469px;min-height:469px;max-height:469px";
+            }
+            //document.getElementById("main_frame_01").style = "max-width:600px;border:none";
+            var frame = window.parent.document.getElementById("main_frame_01").contentWindow;
+            var submitform = null;
+            if (frame != null) {
+                submitform = frame.document.getElementById("myform");
+                submitform.submit();
+            }
+        }
+    </script>
+</head>
+<body style="background: #eee">
+    <script type="text/javascript" src="@Url.Content("~/Scripts/Question/jquery.dialog.js")"></script>
+    <!--Header-->
+    @Html.Partial("_Header")
+    @RenderBody()
+    @Html.Partial("_Footer")
+</body>
+</html>

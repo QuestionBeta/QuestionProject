@@ -1,0 +1,45 @@
+﻿@model IEnumerable<DataBase.AppData.XFX_Bug>
+@{
+    Layout = null;    
+}
+@if (Model != null && Model.Count() > 0)
+{
+    foreach (var item in Model)
+    {
+    <div class="col-sm-6 col-md-4 col-lg-3 ">
+        <div class="thumbnail">
+            <a target="_blank" title="@item.key_values" href="@Url.Action("Detail", "Bug", new { id = item.id })">
+                @if (string.IsNullOrEmpty(item.url))
+                {
+                    <img width="300" height="150" alt="@item.key_values" src="@Url.Content("~/Content/images/not_found.jpg")" class="lazy" style="width:242px;height:141px"/>
+                }
+                else
+                {
+                    <img width="300" height="150" alt="@item.key_values" src="@item.url" class="lazy" style="width:242px;height:141px"/>
+                }
+            </a>
+            <div class="caption">
+                <h3>
+                    <a style="overflow: hidden; text-overflow: ellipsis;  white-space: nowrap;  word-break: keep-all; display:block" target="_blank" title="@Html.Raw(item.title)" href="@Url.Action("Detail", "Bug", new { id = item.id })">
+                        @item.title</a>
+                </h3>
+                <p style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; word-break: keep-all;
+                    display: block">
+                    @item.key_values
+                </p>
+                <br />
+                <small>by @item.User.user_name @item.time</small>
+            </div>
+        </div>
+    </div>
+    }
+    <div style="clear: both">
+    </div>
+    <ul id="pagercontrol" class="pagination">@ViewBag.Data</ul>
+}
+else
+{
+    <div style="padding: 6px; text-align: center">
+        暂无数据
+    </div>
+}
