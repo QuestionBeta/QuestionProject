@@ -1,0 +1,58 @@
+﻿@{
+    ViewBag.Title = "首页-Find Me";
+}
+<script type="text/javascript" src="@Url.Content("~/Scripts/Question/datapager.js")"></script>
+<script type="text/javascript">
+    $(function () {
+
+    });
+
+    function SearchFun() {
+        
+    }
+
+    function GetKeyWords() {
+        var keywords = document.getElementById("keywords").value;
+        return keywords;
+    }
+</script>
+<div class="container content">
+    <div class="row">
+        <div class="col-md-9" role="main">
+            <div  style="width: 100%; padding: 5px" id="data_list">
+                @Html.Partial("LoadData", (List<DataBase.AppData.XFX_Bug>)ViewBag.List)
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div role="complementary" class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix-top">
+            <div style="padding: 5px; border-bottom: 1px solid #eaeaea">
+                   <input type="text" class="form-control" id="keywords" style="width:170px;float:left" placeholder="请输入标题或者关键字"/>
+                   <input type="button" class="btn btn-info" value="搜索" style="padding:5px; margin-left:5px;width:60px" onclick="javascript:location.href = '/Search/SearchResult/'+ GetKeyWords()"/>
+                </div>
+                <div style="padding: 5px; border-bottom: 1px solid #eaeaea">
+                    <h5>
+                        最新动态</h5>
+                </div>
+                <ul class="nav bs-docs-sidenav">
+                    <li class="">
+                        <ul class="nav">
+                            @Html.Partial("LoadLastedActicle", (List<DataBase.AppData.XFX_Bug>)ViewBag.NewsList)
+                        </ul>
+                    </li>
+                </ul>
+                <div style="padding: 5px; border-bottom: 1px solid #eaeaea">
+                    <h5>
+                        所有分类</h5>
+                </div>
+                <ul class="nav bs-docs-sidenav">
+                    <li class="">
+                    
+                        <ul class="nav" id="nav_b">
+                            @Html.Partial("LoadCategory", (List<DataBase.AppData.Category>)ViewBag.Category)
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

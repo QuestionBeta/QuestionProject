@@ -1,0 +1,241 @@
+﻿@{
+    ViewBag.Title = "角色管理";
+    Layout = "~/Areas/HTGL/Views/Shared/_Layout.cshtml";
+}
+<style type="text/css">
+    #win select
+    {
+        height: 24px;
+        padding: 2px;
+        width: 180px;
+    }.controls
+    {
+        padding-left:90px;
+    }.hidde
+    {
+        display:none;
+    }
+    .hdp
+    {
+        display:none;
+    }
+    #form
+    {
+        margin:5px;
+    }
+</style>
+<script type="text/javascript">
+    $(function () {
+        var lastIndex;
+        $('#mytable').datagrid({
+            type: 'POST',
+            idField: "id",
+            url: '/UserManage/GetData',
+            loadMsg: '加载中...',
+            height: 'auto',
+            width: '100%',
+            pageSize: 10,
+            singleSelect: true,
+            pagination: true, //分页控件
+            rownumbers: true, //行号
+            animate: true,
+            fitColumns: true,
+            fit: false, //自动大小
+            onDblClickRow: function (rowIndex, rowData) {
+                lastIndex = rowIndex;
+                $("#mytable").datagrid('endEdit', rowIndex);
+                $("#mytable").datagrid('beginEdit', rowIndex);
+                var oldordering = rowData.ordering;
+            },
+            columns: [[
+                        { field: 'id', checkbox: true, title: '全选', width: 50 },
+                        { field: 'role_name', title: '角色名称', width: 150, align: 'center', formatter: function (value) { if (value != null) { return '<img src="' + value + '" style="width:100px; height:100px"/>'; } } },
+                        { field: 'description', title: '角色描述', width: 200, align: 'center' },
+                        { field: 'role_code', title: '角色代码', width: 100, align: 'center', formatter: function (value) { if (value != null) { return value.name } } },
+                        
+                        { field: 'action', title: '操作', width: 200, align: 'center',
+                            formatter: function (value, row, index) {
+                                                                var e = '<a href="#" onclick="openDialog(' + row.id + ',0)">编辑</a>';
+                                                                var d = '<a href="#" onclick="delMenu(\'' + row.id + '\',\'' + row.type + '\')">删除</a>';
+//////                                var f = '<a href="../GoodsPropertyValue/GoodsPropertyValueList?goodsid=' + row.id + '">查看参数</a>';
+//////                                var g = '<a href="GoodsImg?goodsid=' + row.id + '">查看图片</a>';
+                                //                                alert(row.defaultvalue);
+                                //                                if (!row.defaultvalue) {
+                                                                return e + " | " + d;
+                                //                                } else {
+                                //                                    return e;
+                                //                                }
+                            }
+                        }
+                ]], toolbar: [{
+                    text: '新增',
+                    iconCls: 'icon-add',
+                    handler: function () {
+                        $('#win').find('form').remove();
+                        openDialog(null, 1);
+                    }
+                }, '-', {
+                    text: '编辑',
+                    iconCls: 'icon-edit',
+                    handler: function () {
+                        var table = $('#mytable').datagrid('getSelected');
+                        if (table != null) {
+                            openDialog(table.id, 0);
+                        } else {
+                            $.messager.alert('提示信息', '请先选择行', 'icon-add', null);
+                        }
+                    }
+                }, '-', { text: '删除', iconCls: 'icon-delete', handler: function (index, value, rowData) {
+                    //                    delMenu(rowData.id, rowData.type);
+                    var table = $('#mytable').datagrid('getSelected');
+                    if (table != null) {
+                        delMenu(table.id, table.type);
+                    } else {
+                        $.messager.alert('提示信息', '请先选择行', 'icon-add', null);
+                    }
+                }
+                }, '-', {
+                    text: '设置热门',
+                    iconCls: 'icon-tip',
+                    handler: openDialog
+                }, '-', {
+                    text: '设置新品',
+                    iconCls: 'icon-tip',
+                    handler: openDialog
+                }, '-', {
+                    text: '取消热门',
+                    iconCls: 'icon-cancel',
+                    handler: openDialog
+                }, '-', {
+                    text: '取消新品',
+                    iconCls: 'icon-cancel',
+                    handler: openDialog
+                }]
+        });
+        $('#pid').attr('disabled', true);
+        $('#pcategory').change(change());
+        widow();
+
+    });
+
+    function uploadMsg(fid, name) {
+        var frame = document.getElementById(fid).contentWindow; //获取iFrame窗口中加载的网页对象 
+        var file = document.getElementById(fid).contentWindow.document.getElementById("fileField");
+        var formControl = frame.document.getElementById("uploadform");
+        if (file == null || file == "" || file.value == "" || file.value == '') {
+            $.messager.alert('提示信息', '请选择文件');
+        } else {
+            frame.window.setHiddenValue(name);
+            formControl.submit();
+        }
+    }
+
+    function callbackMsg(msg) {
+        $.messager.alert('提示信息', msg);
+    }
+
+    //0是编辑 1是新增
+    function openDialog(id, type) {
+        $("#win").find('form').remove();
+        $("#win").load("UpLoadControl?id=" + id + "&type=" + type);
+
+        $('#win').window('open');
+    }
+    function change(v) {
+        $("#subcategory").load("GoodsSubCategoryControl?id=" + v);
+    }
+
+    //打开窗口
+    function widow() {
+        $('#win').window({
+            title: '操作选项',
+            width: 660,
+            height: 380,
+            iconCls: 'icon-add',
+            shadow: true,
+            top: 50,
+            left: 250,
+            modal: true,
+            closed: true,
+            collapsible: false,
+            minimizable: false,
+            maximizable: false
+        });
+    }
+
+    //新增为true,编辑为false
+    function SaveBtn(flag) {
+        //        alert(flag);
+        var content = $('#name').attr('value');
+        if (content == '' || content == "") {
+            alert("请填写商品名称");
+        } else {
+            if (flag == false) {
+                //                alert(flag);
+                $.ajax({
+                    type: 'post',
+                    url: '/Goods/UpdateGoods',
+                    data: $("#form").serialize(),
+                    success: function (r) {
+                        if (r == "0") {
+                            $.messager.alert("提示信息", "编辑成功", '', function () {
+                                $('#win').window('close');
+                                $('#mytable').datagrid('reload');
+                                $('#mytable').datagrid('clearSelections');
+                            });
+                        } else {
+                            $.messager.alert("提示信息", "编辑失败");
+                        }
+                    }
+                });
+            }
+
+            if (flag == true) {
+                $.ajax({
+                    type: 'post',
+                    url: '/Goods/AddGoods',
+                    data: $("#form").serialize(),
+                    success: function (r) {
+                        if (r == "0") {
+                            $.messager.alert("提示信息", "添加成功", 'icon-alert', function () {
+                                $('#win').window('close');
+                                $('#mytable').datagrid('reload');
+                            });
+
+                        } else {
+                            $.messager.alert("提示信息", r);
+                        }
+                    }
+                });
+
+            }
+        }
+    }
+
+    //删除菜单
+    function delMenu(id, type) {
+        $.messager.confirm('操作提示', '确定要删除？', function (r) {
+            if (r) {
+                url = "/Goods/DeleteGoods";
+                parameter = { id: id };
+                $.post(url, parameter, function (data) {
+                    if (data == "0") {
+                        $.messager.alert('删除成功!', '删除成功！', 'icon-alert', function () {
+                            $('#mytable').datagrid('reload');
+                        });
+                    } else {
+                        $.messager.alert('提示信息！', data);
+                    }
+                });
+            }
+        });
+    }
+</script>
+<form>
+    <table id="mytable"></table>
+</form>
+<!--新增窗口-->
+<div id="win" class="easyui-window" title="新增窗口" style="width: 300px; height: 150px;
+    padding: 5px;">
+   
+</div>

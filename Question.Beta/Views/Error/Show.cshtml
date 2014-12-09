@@ -1,0 +1,44 @@
+﻿@model Shop.DTModel.Admin.DTError
+@{
+    ViewBag.Title = "访问出错了";
+    Layout = null;
+}
+<link href="@Url.Content("~/Content/home_login.css")" rel="stylesheet" type="text/css" />
+<style type="text/css">
+    .content dt
+    {
+        width: auto;
+    }
+    .content dd
+    {
+        width: 85%;
+    }
+</style>
+<div style="width: 72.4%; margin: auto">
+    <div class="content" style="margin-top: 5px;">
+        @if (Model != null)
+        {
+            <dl style="padding: 15px 0px 0px 30px; font-size: 1.4em; height: auto;">
+                <dt style="margin: auto;">
+                    <img src="/Content/images/img/errors.jpg" alt="访问出错了" /></dt>
+            </dl>
+            
+            if (!string.IsNullOrEmpty(Model.Url))
+            {
+            <dl style="padding: 15px 0px 0px 30px; font-size: 1.4em; height: auto">
+                <dt>出错地址:</dt>
+                <dd style="color: Red; font: 20px; font-family: Arial">
+                    @Model.Url
+                </dd>
+            </dl>
+            }
+            
+            <dl style="font-size: 1.4em; padding: 0px 0px 0px 30px; height: auto">
+                <dt>详细信息:</dt>
+                <dd style="color: Red; font: 20px; font-family: Arial">
+                    @Model.Message
+                </dd>
+            </dl>
+        }
+    </div>
+</div>

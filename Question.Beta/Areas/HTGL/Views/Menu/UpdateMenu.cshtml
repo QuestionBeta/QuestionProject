@@ -1,0 +1,143 @@
+﻿<!--编辑窗口-->
+<form id="form" name="form" class="form-horizontal" method="post" style="margin: 10px">
+@if (Model != null)
+{
+    <div class="control-group">
+        <label class="control-label">
+            菜单名称:</label>
+        <div class="controls">
+            <input type="text" class="input_default" id="name" name="name" value="@Model.name" />
+            <input type="hidden" class="input_default" id="id" name="id" value="@Model.id"/>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">
+            菜单类型:</label>
+        <div class="controls">
+            @if (Model.type)
+            {
+                <select id="type" name="type" disabled="disabled" onchange="DisabledOption()">
+                    <option value="true" selected="selected">父菜单</option>
+                    <option value="false">子菜单</option>
+                </select>
+            }
+            else
+            {
+                <select id="type" name="type" disabled="disabled"  onchange="DisabledOption()">
+                    <option value="true">父菜单</option>
+                    <option value="false" selected="selected">子菜单</option>
+                </select>
+            }
+            <input type="hidden" name="htype" value="@Model.type"/>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">
+            上级菜单:</label>
+        <div class="controls">
+            @if (Model.type)
+            {
+                @Html.DropDownList("pid", ViewData["Value"] as SelectList, new { @disabled = "true" });
+            }
+            else
+            {
+                @Html.DropDownList("pid", ViewData["Value"] as SelectList, new { });
+            }
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">
+            链接地址:</label>
+        <div class="controls">
+            @Html.TextBox("url")
+        </div>
+    </div>
+            if (Model.type)
+            {
+    <div class="control-group">
+        <label class="control-label">
+            是否展开:</label>
+        <div class="controls">
+            
+                @if (Model.isexpand)
+                {
+                <select id="isexpand" name="isexpand">
+                    <option value="true" selected="selected">是</option>
+                    <option value="false">否</option>
+                </select>
+                }
+                else
+                {
+                <select id="isexpand" name="isexpand">
+                    <option value="true">是</option>
+                    <option value="false" selected="selected">否</option>
+                </select>
+                }
+            
+        </div>
+    </div>
+            }
+    <div class="control-submit">
+        <div class="controls">
+            <span style="padding-left: 100px;">
+                <input type="button" onclick="SaveBtn(false)" id="btnsave" style="width: 50px" class="input_default "
+                    value="提交" /></span> <span>
+                        <input style="width: 50px" onclick="closeDialog(false)" type="button" id="btncancel"
+                            class="input_default " value="取消" /></span>
+        </div>
+    </div>
+}
+else
+{
+    <div class="control-group">
+        <label class="control-label">
+            菜单名称:</label>
+        <div class="controls">
+            <input type="text" class="input_default" id="name" name="name" />
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">
+            菜单类型:</label>
+        <div class="controls">
+            <select id="type" name="type" class="" onchange="DisabledOption()">
+                <option value="true">父菜单</option>
+                <option value="false">子菜单</option>
+            </select>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">
+            父菜单:</label>
+        <div class="controls">
+            @Html.DropDownList("pid", ViewData["Value"] as SelectList, new { @disabled = "true" });
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">
+            链接地址:</label>
+        <div class="controls">
+             @Html.TextBox("url")
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">
+            是否展开:</label>
+        <div class="controls">
+            <select id="isexpand" name="isexpand">
+                <option value="false">是</option>
+                <option value="true">否</option>
+            </select>
+        </div>
+    </div>
+    <div class="control-submit">
+        <div class="controls">
+            <span style="padding-left: 100px;">
+                <input type="button" onclick="SaveBtn(true)" id="btnsave" style="width: 50px" class="input_default "
+                    value="提交" /></span> <span>
+                        <input style="width: 50px" onclick="closeDialog(true)" type="button" id="btncancel"
+                            class="input_default " value="取消" /></span>
+        </div>
+    </div>
+}
+</form>

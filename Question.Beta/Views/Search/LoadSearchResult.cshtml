@@ -1,0 +1,76 @@
+﻿@model IEnumerable<DataBase.AppData.XFX_Bug>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table>
+    <tr>
+        <th></th>
+        <th>
+            user_id
+        </th>
+        <th>
+            category
+        </th>
+        <th>
+            url
+        </th>
+        <th>
+            title
+        </th>
+        <th>
+            key_values
+        </th>
+        <th>
+            description
+        </th>
+        <th>
+            anwser
+        </th>
+        <th>
+            iscomplete
+        </th>
+        <th>
+            time
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.id })
+        </td>
+        <td>
+            @item.user_id
+        </td>
+        <td>
+            @item.category
+        </td>
+        <td>
+            @item.url
+        </td>
+        <td>
+            @item.title
+        </td>
+        <td>
+            @item.key_values
+        </td>
+        <td>
+            @item.description
+        </td>
+        <td>
+            @item.anwser
+        </td>
+        <td>
+            @item.iscomplete
+        </td>
+        <td>
+            @String.Format("{0:g}", item.time)
+        </td>
+    </tr>
+}
+
+</table>
+

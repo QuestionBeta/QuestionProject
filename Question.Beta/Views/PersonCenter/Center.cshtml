@@ -1,0 +1,46 @@
+﻿@{
+    ViewBag.Title = "个人中心";
+    Layout = null;
+}
+
+<div class="container">
+    <div class="left_panel">
+        <h2>
+            <i class="icon_home"></i>订单信息</h2>
+        <ul>
+            <li><a href="javascript:void(0)" onclick="initUrl('#container','@Url.Action("myorder", "Home", new { type = "1" })','0')">
+                未完成订单</a></li>
+            <li><a href="javascript:void(0)" onclick="initUrl('#container','@Url.Action("myorder", "Home", new { type = "0" })','0')">
+                已完成订单</a></li>
+            <li><a href="javascript:void(0)" onclick="initUrl('#container','@Url.Action("getcommentList", "comment", new { type = "2" })','0')">
+                待评价</a></li>
+            <li><a href="javascript:void(0)" onclick="initUrl('#container','@Url.Action("getcommentList", "comment", new { type = "0" })','0')">
+                已评价</a></li>
+        </ul>
+        <h2>
+            <i class="icon_personal"></i>个人信息</h2>
+        <ul>
+            <li><a href="javascript:void(0)" onclick="initUrl('#container','@Url.Action("personalinfo", "Home")','1')">
+                个人信息</a></li>
+            <li><a href="javascript:void(0)" onclick="initUrl('#container','@Url.Action("alterpwd", "Home")','1')">
+                修改密码</a></li>
+        </ul>
+        <h2>
+            <i class="icon_home"></i>系统信息</h2>
+        <ul>
+            <li><a href="javascript:void(0)" onclick="$.loadsys('#container','@Url.Action("myorder", "Home", new { type = "1" })','0')">
+                站内消息</a></li>
+        </ul>
+        <h2>
+            <i class="icon_help"></i>系统帮助</h2>
+        <ul>
+            <li><a href="javascript:void(0)">帮助说明</a></li>
+        </ul>
+    </div>
+    <div class="right_panel">
+        <div id="container">
+        </div>
+    </div>
+    <div class="clearfixed">
+    </div>
+</div>

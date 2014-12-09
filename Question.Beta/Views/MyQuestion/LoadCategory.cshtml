@@ -1,0 +1,16 @@
+﻿@model IEnumerable<DataBase.AppData.Category>
+@{
+    Layout = null;
+}
+@if (Model != null && Model.Count()>0)
+{
+    foreach (var item in Model)
+    {
+        @*@Html.Action("Search", "SearchResult", new { @id = @item.id })*@
+        <li class=""><a href="/Search/SearchResult/@item.id/0">@item.name</a></li>
+    }
+}
+else
+{
+    <li class=""><a href="#">暂无分类</a></li>   
+}

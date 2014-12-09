@@ -1,0 +1,18 @@
+﻿@model IEnumerable<DataBase.AppData.XFX_Bug>
+@{
+    Layout = null; 
+}
+@if (Model != null && Model.Count() > 0)
+{
+    foreach (var item in Model)
+    {
+        <li><a target="_blank" href="@Url.Action("Detail","Bug",new { id = item.id})">@item.title</a></li>
+    }
+    <div style="clear:both"></div>
+}
+else
+{
+    <div style="padding:6px; text-align:center">
+        暂无数据
+    </div>
+}

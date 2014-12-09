@@ -1,0 +1,14 @@
+﻿@if (Model != null)
+{
+    foreach (System.Data.DataRow dr in Model.Select("pid=0"))
+    {                       
+    <li isexpand="@dr["isexpand"].ToString().ToLower()"><span>@dr["name"]</span>
+        <ul>
+            @foreach (System.Data.DataRow dr1 in Model.Select("pid=" + dr["id"]))
+            {
+                <li url="@dr1["url"]"><span>@dr1["name"]</span></li>
+            }
+        </ul>
+    </li>
+    }
+}

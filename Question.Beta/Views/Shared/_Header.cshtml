@@ -1,0 +1,46 @@
+﻿<div role="" id="top" class="navbar navbar-static-top bs-docs-nav">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/">Find Me</a>
+        </div>
+        <div role="navigation" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav" id="navigations">
+                @*<li>
+          <a href="../getting-started/">首页</a>
+        </li>
+        <li>
+          <a href="../css/">我要补充</a>
+        </li>
+        <li>
+          <a href="../components/">我要检索</a>
+        </li>
+        <li>
+          <a href="../javascript/">关于我们</a>
+        </li>
+        <li>
+          <a href="../customize/">联系我们</a>
+        </li>
+        <li>
+          <a href="../customize/">技术论坛</a>
+        </li>*@
+            </ul>
+            <ul id="useArea" class="nav navbar-nav navbar-right">
+            @if (Request.IsAuthenticated)
+            {
+                <li>
+                    <a style="width:160px" target="_blank" href="#">个人中心(@Context.User.Identity.Name)</a>
+                </li>
+                 <li>
+                    <a href="javascript:void(0)" style="width:86px" id="loginout123">退出登录</a>
+                </li>
+            }
+            else
+            {
+                <li><a class="btn btn-primary" id="loginbtn">
+                    登录</a></li>
+                <li><a class="btn btn-success" id="registerbtn" >注册</a></li>
+            }
+            </ul>
+        </div>
+    </div>
+</div>

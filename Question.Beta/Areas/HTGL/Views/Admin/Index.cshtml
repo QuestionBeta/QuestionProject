@@ -1,0 +1,248 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewBag.Title</title>
+    <link rel="Stylesheet" type="text/css" href="@Url.Content("~/Content/admin/ligerui-all.css")" />
+    <link rel="Stylesheet" type="text/css" href="@Url.Content("~/Content/admin/style.css")" />
+    <script type="text/javascript" src="@Url.Content("~/Scripts/Question/jquery-1.9.1.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/Question/ligerBuild.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/Question/function.js")"></script>
+    <script type="text/javascript">
+        var tab = null;
+        var accordion = null;
+        var tree = null;
+
+        $(function () {
+            //            $('#global_channel_tree').load('/Menu/LeftMenu');
+            //            LoadMenu();
+            $('#loginout').bind('click', function () {
+                $.ligerDialog.confirm("确认退出系统", "提示信息", function (a) {
+                    if (a) {
+                        $.ajax({
+                            url: 'ajax/sys/loginout.ashx',
+                            success: function (r) {
+                                if (r == "0") {
+                                    $.ligerDialog.alert("退出成功", "提示信息", "", function () {
+                                        location.href = "login.aspx";
+                                    });
+                                } else {
+                                    $.ligerDialog.alert("退出失败", "提示信息");
+                                }
+                            }
+                        });
+                    }
+                });
+            });
+
+            //页面布局
+            $("#global_layout").ligerLayout({ leftWidth: 180, height: '100%', topHeight: 65, bottomHeight: 24, allowTopResize: false, allowBottomResize: false, allowLeftCollapse: true, onHeightChanged: f_heightChanged });
+            //设置频道菜单
+            LoadMenu();
+
+            var height = $(".l-layout-center").height();
+
+            //Tab
+            $("#framecenter").ligerTab({ height: height });
+            //            loadPluginsNav();
+            //左边导航面板
+            $("#global_left_nav").ligerAccordion({ height: height - 25, speed: null });
+
+            $(".l-link").hover(function () {
+                $(this).addClass("l-link-over");
+            }, function () {
+                $(this).removeClass("l-link-over");
+            });
+            //            $('#global_channel_tree').load('/Menu/LeftMenu');
+
+
+            //快捷菜单
+            var menu = $.ligerMenu({ width: 120, items:
+		[
+			{ text: '管理首页', click: itemclick },
+			{ text: '修改密码', click: itemclick },
+			{ line: true },
+			{ text: '关闭菜单', click: itemclick }
+		]
+            });
+            $("#tab-tools-nav").bind("click", function () {
+                var offset = $(this).offset(); //取得事件对象的位置
+                menu.show({ top: offset.top + 27, left: offset.left - 120 });
+                return false;
+            });
+
+            tab = $("#framecenter").ligerGetTabManager();
+            accordion = $("#global_left_nav").ligerGetAccordionManager();
+            tree = $("#global_channel_tree").ligerGetTreeManager();
+            //tree.expandAll(); //默认展开所有节点
+            $("#pageloading_bg,#pageloading").hide();
+
+
+            //加载插件菜单
+            //            loadPluginsNav();
+
+        });
+
+        //        //频道菜单异步加载函数，结合ligerMenu.js使用
+        //        function loadChannelTree() {
+        //            if (tree != null) {
+        //                tree.clear();
+        //                tree.loadData(null, "/Admin/LeftMenuNav");
+        //            }
+        //        }
+
+        //加载插件管理菜单
+        function loadPluginsNav(data) {
+            $("#global_channel_tree").ligerTree({
+                data: eval(data),
+                checkbox: false,
+                nodeWidth: 112,
+                //attribute: ['nodename', 'url'],
+                onSelect: function (node) {
+                    if (!node.data.url) return;
+                    var tabid = $(node.target).attr("tabid");
+                    if (!tabid) {
+                        tabid = new Date().getTime();
+                        $(node.target).attr("tabid", tabid);
+                    }
+                    f_addTab(tabid, node.data.text, node.data.url);
+                }
+            });
+        }
+
+        function LoadMenu() {
+            //            $('#global_channel_tree').find('li').remove();
+            $.ajax({
+                type: 'post',
+                url: '/HTGL/Admin/LeftMenuNav?time=' + (new Date()).getDate() + (new Date()).getSeconds() + (new Date()).getMilliseconds(),
+                success: function (data) {
+                    $("#global_channel_tree").ligerTree({
+                        data: eval(data),
+                        checkbox: false,
+                        nodeWidth: 112,
+                        //attribute: ['nodename', 'url'],
+                        onSelect: function (node) {
+                            if (!node.data.url) return;
+                            var tabid = $(node.target).attr("tabid");
+                            if (!tabid) {
+                                tabid = new Date().getTime();
+                                $(node.target).attr("tabid", tabid);
+                            }
+                            f_addTab(tabid, node.data.text, node.data.url);
+                        }
+                    });
+                }
+            });
+        }
+
+        function Remove() {
+            $('#hh').find('ul').remove();
+            $('#hh').append('<ul id="global_channel_tree" style="margin-top: 3px;"></ul>');
+        }
+
+        //快捷菜单回调函数
+        function itemclick(item) {
+            switch (item.text) {
+                case "管理首页":
+                    f_addTab('home', '管理中心', 'center.aspx');
+                    break;
+                case "快捷导航":
+                    //调用函数
+                    break;
+                case "修改密码":
+                    f_addTab('home', '修改密码', 'center.aspx');
+                    break;
+                default:
+                    //关闭窗口
+                    break;
+            }
+        }
+
+        function f_heightChanged(options) {
+            if (tab)
+                tab.addHeight(options.diff);
+            if (accordion && options.middleHeight - 24 > 0)
+                accordion.setHeight(options.middleHeight - 24);
+        }
+        //添加Tab，可传3个参数
+        function f_addTab(tabid, text, url, iconcss) {
+            if (arguments.length == 4) {
+                tab.addTabItem({ tabid: tabid, text: text, url: url, iconcss: iconcss });
+            } else {
+                tab.addTabItem({ tabid: tabid, text: text, url: url });
+            }
+        }
+        //提示Dialog并关闭Tab
+        function f_errorTab(tit, msg) {
+            $.ligerDialog.open({
+                isDrag: false,
+                allowClose: false,
+                type: 'error',
+                title: tit,
+                content: msg,
+                buttons: [{
+                    text: '确定',
+                    onclick: function (item, dialog, index) {
+                        //查找当前iframe名称
+                        var itemiframe = "#framecenter .l-tab-content .l-tab-content-item";
+                        var curriframe = "";
+                        $(itemiframe).each(function () {
+                            if ($(this).css("display") != "none") {
+                                curriframe = $(this).attr("tabid");
+                                return false;
+                            }
+                        });
+                        if (curriframe != "") {
+                            tab.removeTabItem(curriframe);
+                            dialog.close();
+                        }
+                    }
+                }]
+            });
+        }
+    </script>
+    <style type="text/css">
+        a
+        {
+            text-decoration:none;
+        }
+    </style>
+</head>
+<body>
+    <form id="form1" runat="server">
+    <div class="pageloading_bg" id="pageloading_bg">
+    </div>
+    <!--    <div id="pageloading">数据加载中，请稍等...</div>-->
+    <div id="global_layout" class="layout" style="width: 100%">
+        <!--头部-->
+        <div position="top" class="header">
+            <div class="header_box">
+                <div class="header_right">
+                    <span><b>管理员</b>您好，欢迎光临</span>
+                    <br />
+                    <a href="javascript:f_addTab('home','管理中心','center.aspx')">管理中心</a> | <a target="_blank"
+                        href="../">预览网站</a> | <a href="javascript:void(0);" id="loginout">安全退出</a>
+                </div>
+                <a class="logo" style="font-size: 20px; font-weight: bold; line-height: 50px; padding-left: 10px;">@ViewBag.Company</a>
+            </div>
+        </div>
+        <!--左边-->
+        <div position="left" title="管理菜单" id="global_left_nav">
+            <div title="功能菜单" iconcss="menu-icon-model" class="l-scroll" id="hh">
+                @*@Html.Partial("LeftMenu")*@
+                <ul id="global_channel_tree" style="margin-top: 3px;">
+                </ul>
+            </div>
+        </div>
+        <div position="center" id="framecenter" toolsid="tab-tools-nav">
+            <div tabid="home" title="管理中心" iconcss="tab-icon-home" style="height: 300px">
+                <iframe frameborder="0" name="sysMain" src="/Htgl/Admin/Center"></iframe>
+            </div>
+        </div>
+        <div position="bottom" class="footer">
+            <div class="copyright">
+                @ViewBag.CopyRight</div>
+        </div>
+    </div>
+    </form>
+</body>
+</html>

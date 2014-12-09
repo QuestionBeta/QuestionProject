@@ -1,0 +1,22 @@
+﻿@model DataBase.AppData.XFX_Bug
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container content">
+    <div class="row">
+        @if (Model != null)
+        {
+            <center>
+                <h3>@Model.title</h3>
+                <p>
+                edit by @Model.User.user_name @Model.time &nbsp;@if(Model.User.user_login_name == Context.User.Identity.Name){ @Html.ActionLink("编辑", "/AddBug/" + Model.id)  @Html.ActionLink(" 删除", "/AddBug/" + Model.id)}</p>
+            </center>
+            <hr />
+            <div style="padding:8px">  
+            <div style="text-indent:30px">
+              @Html.Raw(Model.description)
+            </div>
+            </div>
+        }
+    </div>
+</div>

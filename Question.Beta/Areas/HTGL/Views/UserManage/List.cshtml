@@ -1,0 +1,277 @@
+﻿@{
+    Layout = null;
+}
+
+<style type="text/css">
+    #win select
+    {
+        height: 24px;
+        padding: 2px;
+        width: 180px;
+    }.controls
+    {
+        padding-left:90px;
+    }.hidde
+    {
+        display:none;
+    }
+    .hdp
+    {
+        display:none;
+    }
+    #form
+    {
+        margin:5px;
+    }
+</style>
+<script type="text/javascript">
+    $(function () {
+        var lastIndex;
+        $('#mytable').datagrid({
+            type: 'POST',
+            idField: "id",
+            url: '/UserManage/GetData',
+            loadMsg: '加载中...',
+            height: 'auto',
+            width: '100%',
+            pageSize: 10,
+            singleSelect: true,
+            pagination: true, //分页控件
+            rownumbers: true, //行号
+            animate: true,
+            fitColumns: true,
+            fit: false, //自动大小
+            onDblClickRow: function (rowIndex, rowData) {
+                lastIndex = rowIndex;
+                $("#mytable").datagrid('endEdit', rowIndex);
+                $("#mytable").datagrid('beginEdit', rowIndex);
+                var oldordering = rowData.ordering;
+            },
+            columns: [[
+                        { field: 'id', checkbox: true, title: '全选', width: 50 },
+                        { field: 'user_name', title: '用户名称', width: 150, align: 'center' },
+                        { field: 'user_nick_name', title: '用户昵称', width: 200, align: 'center' },
+                        { field: 'user_role', title: '角色', width: 200, align: 'center' },
+                        { field: 'user_login_name', title: '登录名', width: 100, align: 'center' },
+                        { field: 'user_pwd', title: '密码', width: 200, align: 'center' },
+                        { field: 'user_tel', title: '电话', width: 200, align: 'center' },
+                        { field: 'user_email', title: '邮箱', width: 200, align: 'center' },
+                        { field: 'isopen', title: '用户状态', width: 200, align: 'center', formatter: function (value) { if (value != null) { if (value) { return '<span style="color:green">已启用</span>'; } else { return '<span style="color:red">已禁用</span>'; } } } },
+                        { field: 'time', title: '创建时间', width: 200, align: 'center', formatter: function (value) { if (value != null) { return getDateTime(value); } } },
+                        { field: 'action', title: '操作', width: 200, align: 'center',
+                            formatter: function (value, row, index) {
+                                var e = '<a href="#" onclick="openDialog(' + row.id + ',0)">编辑</a>';
+                                var d = '<a href="#" onclick="delMenu(\'' + row.id + '\')">删除</a>';
+                                var v = "启用";
+                                if (row.isopen) {
+                                    v = "禁用";
+                                }
+                                //alert(v);
+                                var f = '<a href="#" onclick="disableUser(\'' + row.id + '\',' + row.isopen + ')">' + v + '</a>';
+                                return e + " | " + d + " | " + f;
+                            }
+                        }
+                ]], toolbar: [{
+                    text: '新增',
+                    iconCls: 'icon-add',
+                    handler: function () {
+                        $('#win').find('form').remove();
+                        openDialog(null, 1);
+                    }
+                }, '-', {
+                    text: '编辑',
+                    iconCls: 'icon-edit',
+                    handler: function () {
+                        var table = $('#mytable').datagrid('getSelected');
+                        if (table != null) {
+                            openDialog(table.id, 0);
+                        } else {
+                            $.messager.alert('提示信息', '请先选择行', 'icon-add', null);
+                        }
+                    }
+                }, '-', { text: '删除', iconCls: 'icon-delete', handler: function (index, value, rowData) {
+                    //                    delMenu(rowData.id, rowData.type);
+                    var table = $('#mytable').datagrid('getSelected');
+                    if (table != null) {
+                        delMenu(table.id, table.type);
+                    } else {
+                        $.messager.alert('提示信息', '请先选择行', 'icon-add', null);
+                    }
+                }
+                }]
+        });
+        $('#pid').attr('disabled', true);
+        $('#pcategory').change(change());
+        widow();
+
+    });
+
+    function uploadMsg(fid, name) {
+        var frame = document.getElementById(fid).contentWindow; //获取iFrame窗口中加载的网页对象 
+        var file = document.getElementById(fid).contentWindow.document.getElementById("fileField");
+        var formControl = frame.document.getElementById("uploadform");
+        if (file == null || file == "" || file.value == "" || file.value == '') {
+            $.messager.alert('提示信息', '请选择文件');
+        } else {
+            frame.window.setHiddenValue(name);
+            formControl.submit();
+        }
+    }
+
+    function callbackMsg(msg) {
+        $.messager.alert('提示信息', msg);
+    }
+
+    //0是编辑 1是新增
+    function openDialog(id, type) {
+        $("#win").find('form').remove();
+        $("#win").load("GoodsAddControl?id=" + id + "&type=" + type);
+
+        $('#win').window('open');
+    }
+    function change(v) {
+        $("#subcategory").load("GoodsSubCategoryControl?id=" + v);
+    }
+
+    //打开窗口
+    function widow() {
+        $('#win').window({
+            title: '操作选项',
+            width: 660,
+            height: 380,
+            iconCls: 'icon-add',
+            shadow: true,
+            top: 50,
+            left: 250,
+            modal: true,
+            closed: true,
+            collapsible: false,
+            minimizable: false,
+            maximizable: false
+        });
+    }
+
+    //新增为true,编辑为false
+    function SaveBtn(flag) {
+        //        alert(flag);
+        $('#flag').attr('value', flag);
+        if (flag == false) {
+            //                alert(flag);
+            $.ajax({
+                type: 'post',
+                url: '/UserManage/UpdateUser',
+                data: $("#form").serialize(),
+                success: function (r) {
+                    if (r == "用户信息编辑成功") {
+                        $.messager.alert("提示信息", r, '', function () {
+                            $('#win').window('close');
+                            $('#mytable').datagrid('reload');
+                            $('#mytable').datagrid('clearSelections');
+                        });
+                    } else {
+                        $.messager.alert("提示信息", "编辑失败");
+                    }
+                }
+            });
+        }
+
+        if (flag == true) {
+            $.ajax({
+                type: 'post',
+                url: '/UserManage/UpdateUser',
+                data: $("#form").serialize(),
+                success: function (r) {
+                    if (r == "用户信息新增成功") {
+                        $.messager.alert("提示信息", r, 'icon-alert', function () {
+                            $('#win').window('close');
+                            $('#mytable').datagrid('reload');
+                        });
+
+                    } else {
+                        $.messager.alert("提示信息", r);
+                    }
+                }
+            });
+
+        }
+    }
+
+    //删除用户
+    function delMenu(id) {
+        $.messager.confirm('操作提示', '确定要删除？', function (r) {
+            if (r) {
+                url = "/UserManage/DelUser";
+                parameter = { id: id };
+                $.post(url, parameter, function (data) {
+                    if (data == "0") {
+                        $.messager.alert('删除成功!', '删除成功！', 'icon-alert', function () {
+                            $('#mytable').datagrid('reload');
+                        });
+                    } else {
+                        $.messager.alert('提示信息', '删除失败！');
+                    }
+                });
+            }
+        });
+    }
+
+    //禁用用户
+    function disableUser(id, isopen) {
+        var msg = "";
+        //alert(isopen);
+        if (isopen) {
+            msg = "禁用";
+        } else {
+            msg = "启用";
+        }
+        $.messager.confirm('操作提示', '确定要' + msg + '该用户？', function (r) {
+            if (r) {
+                // alert(id);
+                url = "/UserManage/DisabledUser";
+                parameter = { id: id, isopen: isopen };
+                $.post(url, parameter, function (data) {
+                    if (data == "0") {
+                        $.messager.alert('提示信息', msg + '成功！', 'icon-alert', function () {
+                            $('#mytable').datagrid('reload');
+                        });
+                    } else {
+                        $.messager.alert('提示信息！', msg + '失败！');
+                    }
+                });
+            }
+        });
+    }
+
+    //type:0是编辑 1是新增
+    function openDialog(id, type) {
+        $("#win").find('form').remove();
+        $("#win").load("UpdateUser?id=" + id + "&type=" + type);
+
+        $('#win').window('open');
+    }
+
+    //新增为true,编辑为false
+    function closeDialog(flag) {
+        $('#win').window('close');
+    }
+    
+    function getDateTime(date) {
+         date = new Date(eval('new ' + (date.replace(/\//g, ''))));
+         var year = date.getFullYear();
+         var month = date.getMonth() + 1;
+         var day = date.getDate();
+         var hh = date.getHours();
+         var mm = date.getMinutes();
+         var ss = date.getSeconds();
+       
+         return year + "-" + month + "-" + day + " " + hh + ":" + mm + ":" + ss;
+     }
+</script>
+<form>
+    <table id="mytable"></table>
+</form>
+<!--新增窗口-->
+<div id="win" class="easyui-window" title="新增窗口" style="width: 300px; height: 150px;
+    padding: 5px;">
+    
+</div>
