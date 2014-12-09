@@ -1,0 +1,43 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewBag.Title</title>
+    <link rel="Stylesheet" type="text/css" href="../../../../Content/admin/all.css" />
+    <link rel="Stylesheet" type="text/css" href="../../../../Content/admin/style.css" />
+    <script type="text/javascript" src="../../../../Scripts/Question/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="../../../../Scripts/Question/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="../../../../Scripts/Question/easyui-lang-zh_CN.js"></script>
+    <style type="text/css">
+    #win select,#search select
+    {
+        height: 24px;
+        padding: 2px;
+        width: 160px;
+    }
+    #search input[type='text']
+    {
+        height:22px;
+    }
+    #search input[type='button']
+    {
+        padding:2px;
+        width:55px;
+    }
+</style>
+ <script type="text/javascript">
+     function getDateTime(date) {
+         date = new Date(eval('new ' + (date.replace(/\//g, ''))));
+         var year = date.getFullYear();
+         var month = date.getMonth() + 1;
+         var day = date.getDate();
+         var hh = date.getHours();
+         var mm = date.getMinutes();
+         var ss = date.getSeconds();
+         return year + "-" + month + "-" + day + " " + hh + ":" + mm + ":" + ss;
+     }
+    </script>
+</head>
+<body>
+    @RenderBody()
+</body>
+</html>

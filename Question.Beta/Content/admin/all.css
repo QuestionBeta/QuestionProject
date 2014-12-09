@@ -1,0 +1,36 @@
+﻿@import url('default.css');
+@import url('easyui.css');
+@import url('icon.css');
+body {
+}
+
+.control-group {
+    margin-bottom: 16px;
+    width: 100%;
+}
+
+.control-label {
+    float: left;
+    text-align: right;
+    vertical-align: middle;
+    width: 85px;
+}
+
+.input_default {
+    border: 1px solid #CCCCCC;
+    height: 22px;
+    line-height: 18px;
+    vertical-align: middle;
+    width: 180px;
+}
+.help-inline {
+    color: Red;
+    font-family: Arial;
+    font-size: 12px;
+}
+label {
+    font-family: Arial,Helvetica,sans-serif;
+    margin-right: 5px;
+    vertical-align: middle;
+}
+
