@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="s608614db0" Class="XFXDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=210.209.112.127,1435;Initial Catalog=s608614db0;Persist Security Info=True;User ID=s608614db0" SettingsObjectName="DataBase.Properties.Settings" SettingsPropertyName="s608614db0ConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Category" Member="Category">
+    <Type Name="Category">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="description" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="time" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="Category_XFX_Bug" Member="XFX_Bug" ThisKey="id" OtherKey="category" Type="XFX_Bug" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Login" Member="Login">
+    <Type Name="Login">
+      <Column Name="id" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="user_id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="pwd" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="is_alter" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="new_pwd" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="User_Login" Member="User" ThisKey="user_id" OtherKey="id" Type="User" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Menu" Member="Menu">
+    <Type Name="Menu">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="url" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="type" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="defaultvalue" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="isexpand" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="pid" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="roleId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="time" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.[User]" Member="User">
+    <Type Name="User">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="user_name" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="user_nick_name" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="user_login_name" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="user_pwd" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="user_tel" Type="System.String" DbType="VarChar(18)" CanBeNull="true" />
+      <Column Name="user_email" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="isopen" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="user_role" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="time" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="User_Login" Member="Login" ThisKey="id" OtherKey="user_id" Type="Login" />
+      <Association Name="User_XFX_Bug" Member="XFX_Bug" ThisKey="id" OtherKey="user_id" Type="XFX_Bug" />
+    </Type>
+  </Table>
+  <Table Name="dbo.[XFX.Bug]" Member="XFX_Bug">
+    <Type Name="XFX_Bug">
+      <Column Name="id" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="user_id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="category" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="url" Type="System.String" DbType="VarChar(190)" CanBeNull="true" />
+      <Column Name="title" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="key_values" Type="System.String" DbType="VarChar(350)" CanBeNull="true" />
+      <Column Name="description" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="anwser" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="iscomplete" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="time" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="Category_XFX_Bug" Member="Category1" ThisKey="category" OtherKey="id" Type="Category" IsForeignKey="true" />
+      <Association Name="User_XFX_Bug" Member="User" ThisKey="user_id" OtherKey="id" Type="User" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.[XFX.Dictionary]" Member="XFX_Dictionary">
+    <Type Name="XFX_Dictionary">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="num" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="XFX_Dictionary_XFX_DictionaryValue" Member="XFX_DictionaryValue" ThisKey="id" OtherKey="cd" Type="XFX_DictionaryValue" />
+    </Type>
+  </Table>
+  <Table Name="dbo.[XFX.DictionaryValue]" Member="XFX_DictionaryValue">
+    <Type Name="XFX_DictionaryValue">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="cd" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="cdbh" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="cdz" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="XFX_Dictionary_XFX_DictionaryValue" Member="XFX_Dictionary" ThisKey="cd" OtherKey="id" Type="XFX_Dictionary" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.[XFX.Navigation]" Member="XFX_Navigation">
+    <Type Name="XFX_Navigation">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="url" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="order_num" Type="System.String" DbType="NChar(10)" CanBeNull="true" />
+    </Type>
+  </Table>
+</Database>
