@@ -22,7 +22,7 @@ namespace Shop.Web.Models
 
         [Display(Name = "显示名称")]
         [Required(ErrorMessage = "请输入{0}")]
-        [StringLength(8, MinimumLength = 3, ErrorMessage = "用户名称长度过大或过小")]
+        [StringLength(8, MinimumLength = 2, ErrorMessage = "用户名称长度过大或过小")]
         [RegularExpression(@"^(([\u4e00-\u9fa5]+)|(([a-z]+|[A-Z]+).([0-9]+)))", ErrorMessage = "必须为中文或者英文数字组合")]
         [Remote("ValidateUserShow", "Login", HttpMethod = "post", ErrorMessage = "用户显示名称输入有误")]
         /// <summary>
