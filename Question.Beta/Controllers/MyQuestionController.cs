@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using DataBase.AppData;
+using Question.Beta.Helper;
 
 namespace Question.Beta.Controllers
 {
@@ -31,7 +32,8 @@ namespace Question.Beta.Controllers
             //获取分类信息
             var categoryDataList = categoryhandler.GetDataList();
             ViewBag.Category = categoryDataList;
-            
+            EmailHelper email = new EmailHelper("smtp.exmail.qq.com", "jacklision@foxmail.com ", "liweili0721", "1967270996@qq.com");
+            email.SendEmail("这是测试内容", "欢迎使用BUG知识库管理系统");
             return View();
         }
 

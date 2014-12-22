@@ -16,7 +16,7 @@ namespace Question.Beta.Controllers
 
         #region -- 获取BUG列表 --
         public ActionResult BugList()
-        {
+        {            
             return View();
         }
         #endregion
