@@ -75,7 +75,7 @@ namespace Question.Beta.Helper
             try
             {
                 smtpClient.SendCompleted += new SendCompletedEventHandler(smtpClient_SendCompleted);
-                smtpClient.SendAsync(mailMessage,RETURNMSG);
+                smtpClient.SendAsync(mailMessage,"usertoken");
                 return true;
             }
             catch
