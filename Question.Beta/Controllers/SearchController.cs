@@ -13,7 +13,7 @@ namespace Question.Beta.Controllers
         //
         // GET: /Search/
 
-        public ActionResult SearchResult(string id="0"/* 关键字*/, string mode="0"/*分类Id*/)
+        public ActionResult SearchResult(string id = "0"/* 关键字*/, string mode = "0"/*分类Id*/)
         {
             string keywords = string.Empty;
             int cid = 0;
@@ -23,11 +23,11 @@ namespace Question.Beta.Controllers
                 keywords = id;
                 InitCategory(null);
             }
-            else if (mode != "0" && id == "0" )
-            {                
+            else if (mode != "0" && id == "0")
+            {
                 InitCategory(int.Parse(mode));
             }
-            else 
+            else
             {
                 if (id != "0")
                 {
@@ -43,7 +43,7 @@ namespace Question.Beta.Controllers
                     InitCategory(null);
                 }
             }
-            
+
             List<XFX_Bug> bugList = new List<XFX_Bug>();
             if (!string.IsNullOrEmpty(keywords))
             {
@@ -95,14 +95,15 @@ namespace Question.Beta.Controllers
 
             return View("BugList", null, searchModel);
         }
-                
+
         //加载搜索结果
         public PartialViewResult LoadSearchResult()
         {
             return PartialView();
         }
+
         //加载显示BUG列表 图文
-        public ActionResult LoadData(int? page, int? size, string keyword,string category)
+        public ActionResult LoadData(int? page, int? size, string keyword, string category)
         {
             page = page == null ? 1 : page;
             size = size == null ? 12 : size;
