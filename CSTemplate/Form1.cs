@@ -13,6 +13,7 @@ namespace CSTemplate
     public partial class Form1 : Form
     {
         //G:\VS测试项目\WebApplication1\CSTemplate\UIFunction\CategoryFun.cs
+        string basePath = Application.StartupPath.ToString().Replace(@"\bin\Debug", @"\");
         public Form1()
         {
             InitializeComponent();
@@ -25,9 +26,12 @@ namespace CSTemplate
 
         void LoadFile()
         {
-            string path = @"G:\VS测试项目\WebApplication1\CSTemplate\templete.txt";
-            string path1 = @"G:\VS测试项目\WebApplication1\CSTemplate\templeteFun.txt";
+            string path = basePath + "templete.txt";
+            string path1 = basePath + "templeteFun.txt";
+            string dbfacadePath = basePath + "templeteFacade.txt";
+            string funfacadePath = basePath + "templetefunFacade.txt";
             string[] classnames = null;
+                        
             string[] tablenames = null;
             if (!textBox1.Text.Contains(','))
             {
@@ -44,8 +48,13 @@ namespace CSTemplate
             {
                 for (int i = 0; i < classnames.Length; i++)
                 {
-                    Write(path, 0, classnames[i], tablenames[i]);
-                    Write(path1, 1, classnames[i], tablenames[i]);
+                    if (!string.IsNullOrEmpty(classnames[i]))
+                    {
+                        Write(path, 0, classnames[i], tablenames[i]);
+                        Write(path1, 1, classnames[i], tablenames[i]);
+                        Write(dbfacadePath, 2, classnames[i], tablenames[i]);
+                        Write(funfacadePath, 3, classnames[i], tablenames[i]);
+                    }
                 }
             }
         }
@@ -56,17 +65,25 @@ namespace CSTemplate
         /// <param name="path"></param>
         protected void Write(string path,int flag,string classname,string tablename)
         {
-            File.Copy(path, @"G:\VS测试项目\WebApplication1\CSTemplate\templete.cs", true);
-            StreamReader sr = new StreamReader(@"G:\VS测试项目\WebApplication1\CSTemplate\templete.cs", Encoding.UTF8);
+            File.Copy(path, basePath+"templete.cs", true);
+            StreamReader sr = new StreamReader(basePath+"templete.cs", Encoding.UTF8);
             string line = string.Empty;
             string fileName = string.Empty;
             if (flag == 1)
             {
-                fileName = @"G:\VS测试项目\WebApplication1\CSTemplate\UIFunction\" + classname.Trim() + "Fun.cs";
+                fileName = basePath+@"UIFunction\" + classname.Trim() + "Fun.cs";
+            }
+            else if(flag == 0)
+            {
+                fileName = basePath + @"DataBase\" + classname.Trim() + "DB.cs";
+            }
+            else if (flag == 2)
+            {
+                fileName = basePath + @"UserDBFacade\" + classname.Trim() + "DBFacade.cs";
             }
             else
             {
-                fileName = @"G:\VS测试项目\WebApplication1\CSTemplate\DataBase\" + classname.Trim() + "DB.cs";
+                fileName = basePath + @"UserFun\" + classname.Trim() + "Facade.cs";
             }
             FileStream fs = new FileStream(fileName, FileMode.Create);
             StreamWriter sw = new StreamWriter(fs);
@@ -79,12 +96,20 @@ namespace CSTemplate
                     tmp = "Fun";
                     line = line.Replace("$refclassname$", classname.Trim() + "DB");
                 }
-                else
+                else if(flag == 0)
                 {
                     tmp = "DB";
                 }
-
-                line = line.Replace("$classname$", classname.Trim() + tmp);
+                else if (flag == 2)
+                {
+                    tmp = "DB";
+                }
+                else
+                {
+                    tmp = "Fun";
+                }
+                
+                line = line.Replace("$classname$", classname.Trim() + tmp);         
                 line = line.Replace("$tablemodel$", tablename.Trim());
                 sw.WriteLine(line);
                 total++;
@@ -98,7 +123,7 @@ namespace CSTemplate
             sr.Dispose();
             sr.Close();
             fs.Close();
-            File.Delete(@"G:\VS测试项目\WebApplication1\CSTemplate\templete.cs");
+            File.Delete(basePath + "templete.cs");
         }
     }
 }

@@ -7,34 +7,34 @@ using DataBase.AppData;
 
 namespace WebUIFunction
 {
-    public partial class Fun
+    public partial class SysRoleMenuFun
     {
         /// <summary>
         /// 数据访问变量
         /// </summary>
-        public DB  baseDataModel = null;
+        public SysRoleMenuDB  baseDataModel = null;
 
         /// <summary>
         /// 自定义构造函数
         /// </summary>
-        public Fun() 
+        public SysRoleMenuFun() 
 		{ 
-			baseDataModel = new DB();
+			baseDataModel = new SysRoleMenuDB();
 		}
 
         /// <summary>
-        /// 新增信息 0 成功 1失败
+        /// 新增SysRoleMenu信息 0 成功 1失败
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public int InsertDataToTable( model)
+        public int InsertDataToSysRoleMenuTable(SysRoleMenu model)
         {
             int result = 1;
             if (model != null)
             {
                 try
                 {
-                    baseDataModel.InsertDataToTable(model);
+                    baseDataModel.InsertDataToSysRoleMenuTable(model);
                     result = 0;
                 }
                 catch
@@ -47,18 +47,18 @@ namespace WebUIFunction
         }
 
         /// <summary>
-        /// 编辑信息 0 成功 1失败
+        /// 编辑SysRoleMenu信息 0 成功 1失败
         /// </summary>
         /// <param name="model">模型实体信息</param>
         /// <returns>0/1</returns>
-        public int UpdateDataToTable( model)
+        public int UpdateDataToSysRoleMenuTable(SysRoleMenu model)
         {
             int result = 1;
             if (model != null)
             {
                 try
                 {
-                    baseDataModel.UpdateDataToTable(model);
+                    baseDataModel.UpdateDataToSysRoleMenuTable(model);
                     result = 0;
                 }
                 catch
@@ -71,11 +71,11 @@ namespace WebUIFunction
         }
 
         /// <summary>
-        /// 根据 id获取信息
+        /// 根据SysRoleMenu id获取SysRoleMenu信息
         /// </summary>
         /// <param name="id">导航Id</param>
         /// <returns>数据信息</returns>
-        public  GetDataById(int? id)
+        public SysRoleMenu GetDataById(int? id)
         {
             if (id != null)
             {
@@ -85,7 +85,7 @@ namespace WebUIFunction
         }
 
         /// <summary>
-        /// 根据id删除 信息 0成功 1失败
+        /// 根据id删除 SysRoleMenu信息 0成功 1失败
         /// </summary>
         /// <param name="id"></param>
         public int DeleteById(int? id)
@@ -108,21 +108,21 @@ namespace WebUIFunction
         }
 
         /// <summary>
-        /// 获取表列表信息 不带分页
+        /// 获取SysRoleMenu表列表信息 不带分页
         /// </summary>
         /// <returns>返回导航信息</returns>
-        public List<> GetDataList()
+        public List<SysRoleMenu> GetDataList()
         {
             return this.baseDataModel.GetDataList();
         }
 
         /// <summary>
-        /// 获取表列表信息 带分页
+        /// 获取SysRoleMenu表列表信息 带分页
         /// </summary>
         /// <param name="page">页数</param>
         /// <param name="size">当前页数据量大小</param>
         /// <returns>返回数据集</returns>
-        public List<> GetDataList(int? page, int? size)
+        public List<SysRoleMenu> GetDataList(int? page, int? size)
         {
             page = page == null ? 1 : page;
             size = size == null ? 10 : size;

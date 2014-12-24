@@ -7,31 +7,34 @@ using DataBase.AppData;
 
 namespace WebUIFunction
 {
-    public class XFX_NavigationFun
+    public partial class SysRole_PermissionFun
     {
         /// <summary>
         /// 数据访问变量
         /// </summary>
-        public XFX_NavigationDB  baseDataModel = null;
+        public SysRole_PermissionDB  baseDataModel = null;
 
         /// <summary>
         /// 自定义构造函数
         /// </summary>
-        public XFX_NavigationFun() { }
+        public SysRole_PermissionFun() 
+		{ 
+			baseDataModel = new SysRole_PermissionDB();
+		}
 
         /// <summary>
-        /// 新增XFX_Navigation信息 0 成功 1失败
+        /// 新增SysRole_Permission信息 0 成功 1失败
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public int InsertDataToXFX_NavigationTable(XFX_Navigation model)
+        public int InsertDataToSysRole_PermissionTable(SysRole_Permission model)
         {
             int result = 1;
             if (model != null)
             {
                 try
                 {
-                    baseDataModel.InsertDataToXFX_NavigationTable(model);
+                    baseDataModel.InsertDataToSysRole_PermissionTable(model);
                     result = 0;
                 }
                 catch
@@ -44,18 +47,18 @@ namespace WebUIFunction
         }
 
         /// <summary>
-        /// 编辑XFX_Navigation信息 0 成功 1失败
+        /// 编辑SysRole_Permission信息 0 成功 1失败
         /// </summary>
         /// <param name="model">模型实体信息</param>
         /// <returns>0/1</returns>
-        public int UpdateDataToXFX_NavigationTable(XFX_Navigation model)
+        public int UpdateDataToSysRole_PermissionTable(SysRole_Permission model)
         {
             int result = 1;
             if (model != null)
             {
                 try
                 {
-                    baseDataModel.UpdateDataToXFX_NavigationTable(model);
+                    baseDataModel.UpdateDataToSysRole_PermissionTable(model);
                     result = 0;
                 }
                 catch
@@ -68,11 +71,11 @@ namespace WebUIFunction
         }
 
         /// <summary>
-        /// 根据XFX_Navigation id获取XFX_Navigation信息
+        /// 根据SysRole_Permission id获取SysRole_Permission信息
         /// </summary>
         /// <param name="id">导航Id</param>
         /// <returns>数据信息</returns>
-        public XFX_Navigation GetDataById(int? id)
+        public SysRole_Permission GetDataById(int? id)
         {
             if (id != null)
             {
@@ -82,7 +85,7 @@ namespace WebUIFunction
         }
 
         /// <summary>
-        /// 根据id删除 XFX_Navigation信息 0成功 1失败
+        /// 根据id删除 SysRole_Permission信息 0成功 1失败
         /// </summary>
         /// <param name="id"></param>
         public int DeleteById(int? id)
@@ -105,21 +108,21 @@ namespace WebUIFunction
         }
 
         /// <summary>
-        /// 获取XFX_Navigation表列表信息 不带分页
+        /// 获取SysRole_Permission表列表信息 不带分页
         /// </summary>
         /// <returns>返回导航信息</returns>
-        public List<XFX_Navigation> GetDataList()
+        public List<SysRole_Permission> GetDataList()
         {
             return this.baseDataModel.GetDataList();
         }
 
         /// <summary>
-        /// 获取XFX_Navigation表列表信息 带分页
+        /// 获取SysRole_Permission表列表信息 带分页
         /// </summary>
         /// <param name="page">页数</param>
         /// <param name="size">当前页数据量大小</param>
         /// <returns>返回数据集</returns>
-        public List<XFX_Navigation> GetDataList(int? page, int? size)
+        public List<SysRole_Permission> GetDataList(int? page, int? size)
         {
             page = page == null ? 1 : page;
             size = size == null ? 10 : size;

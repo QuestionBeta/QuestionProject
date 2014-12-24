@@ -60,8 +60,18 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="SysPermissionDB.cs" />
+    <Compile Include="SysRoleDB.cs" />
+    <Compile Include="SysRoleMenuDB.cs" />
+    <Compile Include="SysRole_PermissionDB.cs" />
+    <Compile Include="SysUser_RoleDB.cs" />
     <Compile Include="UserDB.cs" />
     <Compile Include="UserFacade\MenuDBFacade.cs" />
+    <Compile Include="UserFacade\SysPermissionDBFacade.cs" />
+    <Compile Include="UserFacade\SysRoleDBFacade.cs" />
+    <Compile Include="UserFacade\SysRoleMenuDBFacade.cs" />
+    <Compile Include="UserFacade\SysRole_PermissionDBFacade.cs" />
+    <Compile Include="UserFacade\SysUser_RoleDBFacade.cs" />
     <Compile Include="UserFacade\UserDBFacade.cs" />
     <Compile Include="UserFacade\XFX_BugDBFacade.cs" />
     <Compile Include="XFX_BugDB.cs" />
@@ -70,6 +80,7 @@
     <Compile Include="XFX_NavigationDB.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="AppData\XFX.dbml">
       <Generator>MSLinqToSQLGenerator</Generator>
       <LastGenOutput>XFX.designer.cs</LastGenOutput>
