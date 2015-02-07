@@ -10,6 +10,22 @@ namespace WebUIFunction
     public partial class UserFun
     {
         /// <summary>
+        /// 根据用户名和密码查询用户是否存在
+        /// </summary>
+        /// <param name="user_name">用户名</param>
+        /// <param name="pwd">密码</param>
+        /// <returns>返回true or false</returns>
+        public bool IsExist(string user_name, string pwd)
+        {
+            if (string.IsNullOrEmpty(user_name) || string.IsNullOrEmpty(pwd))
+            {
+                return false;
+            }
+
+            return this.baseDataModel.IsExist(user_name, pwd);
+        }
+
+        /// <summary>
         /// 根据用户名称获取用户信息
         /// </summary>
         /// <param name="user_name">用户名称</param>

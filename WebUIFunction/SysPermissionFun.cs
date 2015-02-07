@@ -7,12 +7,12 @@ using DataBase.AppData;
 
 namespace WebUIFunction
 {
-    public partial class SysPermissionFun
+    public partial  class SysPermissionFun
     {
         /// <summary>
         /// 数据访问变量
         /// </summary>
-        public SysPermissionDB  baseDataModel = null;
+        protected SysPermissionDB  baseDataModel = null;
 
         /// <summary>
         /// 自定义构造函数

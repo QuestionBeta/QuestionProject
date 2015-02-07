@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using DataBase.AppData;
 
-namespace DataBase
+namespace WebUIFunction
 {
     public partial class SysPermissionFun 
     {
