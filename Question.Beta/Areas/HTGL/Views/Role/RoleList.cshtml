@@ -1,0 +1,306 @@
+﻿@{
+    ViewBag.Title = "RoleList";
+    Layout = "~/Areas/HTGL/Views/Shared/_Layout.cshtml";
+}
+<style type="text/css">
+    #win select
+    {
+        height: 24px;
+        padding: 2px;
+        width: 120px;
+    }
+    #search
+    {
+        padding: 5px 5px 5px 15px;
+    }
+    input[type='checkbox']
+    {
+        padding: 5px;
+        text-align: center;
+        vertical-align: middle;
+    }
+    #permission span,#myform1 span
+    {
+        line-height: 30px;
+        padding: 5px;
+    }
+    
+</style>
+<script type="text/javascript">
+    $(function () {
+        var lastIndex;
+        $('#mytable').datagrid({
+            type: 'POST',
+            idField: "id",
+            url: '/Role/GetData',
+            loadMsg: '加载中...',
+            height: 'auto',
+            width: '100%',
+            pageSize: 10,
+            singleSelect: true,
+            pagination: true, //分页控件
+            rownumbers: true, //行号
+            animate: true,
+            fitColumns: true,
+            fit: false, //自动大小
+            onDblClickRow: function (rowIndex, rowData) {
+                lastIndex = rowIndex;
+                $("#mytable").datagrid('endEdit', rowIndex);
+                $("#mytable").datagrid('beginEdit', rowIndex);
+                var oldordering = rowData.ordering;
+            },
+            columns: [[
+                        { field: 'id', checkbox: true, title: '全选', width: 50 },
+                        { field: 'name', title: '角色名称', width: 200, align: 'center' },
+                        { field: 'order_num', title: '排序号', width: 100, align: 'center' },
+                        { field: 'jb', title: '级别', width: 100, align: 'center' },
+                        { field: 'add_time', title: '创建时间', width: 200, align: 'center', formatter: function (value) { if (value != null) { return getDateTime(value); } } },
+                        { field: 'action', title: '操作', width: 200, align: 'center',
+                            formatter: function (value, row, index) {
+                                var e = '<a href="#" onclick="openEditDialog(\'' + row.id + '\')">编辑</a> ';
+                                var d = '<a href="#" onclick="delRole(\'' + row.id + '\')">删除</a>';
+                                var f = '<a href="#" onclick="openPermissionDialog(\'' + row.id + '\')">分配权限</a>';
+                                //                                alert(row.defaultvalue);
+                                if (!row.defaultvalue) {
+                                    return e + " | " + d + " | " + f;
+                                } else {
+                                    return e;
+                                }
+                            }
+                        }
+                ]], toolbar: [{
+                    text: '新增',
+                    iconCls: 'icon-add',
+                    handler: function () {
+                        $('#win').find('form').remove();
+                        $("#win").load("/Role/UpdateRole?type=1");
+                        $('#win').window('open');
+                    }
+                }, '-', {
+                    text: '编辑',
+                    iconCls: 'icon-edit',
+                    handler: openDialog
+                }, '-', {
+                    text: '分配功能项',
+                    iconCls: 'icon-add',
+                    handler: function () {
+                        var table = $('#mytable').datagrid('getSelected');
+                        if (table != null) {
+                            $('#menu').find('myform1').remove();
+                            $("#menu").load("/@ViewBag.Url/RoleMenu/List/" + table.id);
+                            $('#menu').window('open');
+                        } else {
+                            $.messager.alert("提示信息","请选中行");
+                        }
+                    }
+                }]
+        });
+
+        widow('#win');
+        widow('#permission');
+        widow('#menu');
+    });
+
+    //删除角色
+    function delRole(id) {
+        $.messager.confirm('操作提示', '确定要删除？', function (r) {
+            if (r) {
+                url = "DeleteRole";
+                parameter = { id: id };
+                $.post(url, parameter, function (data) {
+                    if (data == "0") {
+                        $.messager.alert('删除成功!', '删除成功！', 'icon-alert', function () {
+                            $('#mytable').datagrid('reload');
+                            Reload();
+                        });
+                    } else {
+                        $.messager.alert('提示信息！', data);
+                    }
+                });
+            }
+        });
+    }
+
+    function Reload() {
+        window.parent.Remove();
+        window.parent.LoadMenu();
+    }
+
+    //编辑菜单窗口
+    function openDialog() {
+        var table = $('#mytable').datagrid('getSelected');
+        if (table) {
+            $("#win").find('form').remove();
+            $("#win").load("UpdateRole?id=" + table.id);
+            $('#win').window('open');
+        } else {
+            $.messager.alert('提示信息', '请选中行');
+        }
+    }
+
+    //编辑菜单窗口
+    function openPermissionDialog() {
+        var table = $('#mytable').datagrid('getSelected');
+        if (table) {
+            $("#permission").find('form').remove();
+            $("#permission").load("/@ViewBag.Url/AllocationPermission/PermissionList/" + table.id);
+            $('#permission').window('open');
+        } else {
+            $.messager.alert('提示信息', '请选中行');
+        }
+    }
+
+    function openEditDialog(id) {
+        $("#win").find('form').remove();
+        $("#win").load("UpdateRole?id=" + id);
+        $('#win').window('open');
+    }
+
+    function widow(id) {
+        $(id).window({
+            title: '操作选项',
+            width: 380,
+            height: 300,
+            iconCls: 'icon-add',
+            shadow: true,
+            top: 100,
+            left: 300,
+            modal: true,
+            closed: true,
+            collapsible: false,
+            minimizable: false,
+            maximizable: false
+        });
+    }
+
+    //新增为true,编辑为false
+    function SaveBtn(flag) {
+        //        alert(flag);
+        var content = $('#name').attr('value');
+        if (content == '' || content == "") {
+            alert("请填写角色名称");
+        } else {
+            if (flag == false) {
+                //                alert(flag);
+                $.ajax({
+                    type: 'post',
+                    url: 'SaveRole',
+                    data: $("#form").serialize(),
+                    success: function (r) {
+                        if (r == "0") {
+                            $.messager.alert("提示信息", "编辑成功", '', function () {
+                                $('#win').window('close');
+                                $('#mytable').datagrid('reload');
+                                $('#mytable').datagrid('clearSelections');
+                                Reload();
+                            });
+                        } else {
+                            $.messager.alert("提示信息", "编辑失败");
+                        }
+                    }
+                });
+            }
+
+            if (flag == true) {
+                //                alert(flag);
+                $.ajax({
+                    type: 'post',
+                    url: 'SaveRole',
+                    data: $("#form").serialize(),
+                    success: function (r) {
+                        if (r == "0") {
+                            $.messager.alert("提示信息", "添加成功", 'icon-alert', function () {
+                                $('#win').window('close');
+                                $('#mytable').datagrid('reload');
+                                Reload();
+                            });
+
+                        } else if (r == "1") {
+                            $.messager.alert('提示信息', '添加失败', 'icon-alert');
+                        } else {
+                            $.messager.alert("提示信息", "数据格式错误");
+                        }
+                    }
+                });
+
+            }
+        }
+    }
+
+    /***************************   分配权限处理函数开始   *******************************/
+    //保存权限信息
+    function SavePermission() {
+        var id = $('#id').attr('value');
+        var cdata = "";
+        $("input:checked[name='permission']").each(function () {
+            cdata += $(this).attr('value') + ',';
+        });
+        
+        $.ajax({
+            type: 'post',
+            url: '/@ViewBag.Url/AllocationPermission/SavePermission',
+            data: { chkdata: cdata, id: id },
+            success: function (r) {
+                if (r == "0") {
+                    $.messager.alert("提示信息", "分配成功", 'icon-alert', function () {
+                        $('#permission').window('close');
+                        $('#mytable').datagrid('reload');
+                    });
+                } else  {
+                    $.messager.alert('提示信息', '分配失败', 'icon-alert');
+                } 
+            }
+        });
+    }
+    /***************************   分配权限处理函数结束   *******************************/
+
+    /***************************   分配角色功能项处理函数开始   *******************************/
+    function SaveRoleMenu() {
+        var id = $('#id').attr('value');
+        var cdata = "";
+        $("input:checked[name='role_data']").each(function () {
+            cdata += $(this).attr('value') + ',';
+        });
+        //alert(cdata);
+        $.ajax({
+            type: 'post',
+            url: '/@ViewBag.Url/RoleMenu/SaveData',
+            data: { chkdata: cdata, id: id },
+            success: function (r) {
+                if (r == "0") {
+                    $.messager.alert("提示信息", "分配成功", 'icon-alert', function () {
+                        $('#menu').window('close');
+                        $('#mytable').datagrid('reload');
+                        Reload();
+                    });
+                } else {
+                    $.messager.alert('提示信息', '分配失败', 'icon-alert');
+                } 
+            }
+        });
+    }
+    /***************************   分配角色功能项处理函数结束   *******************************/
+    //新增为true,编辑为false
+    function closeDialog(containerid) {
+        $(containerid).window('close');
+    }
+</script>
+<div class="tools_box">
+    <div style="padding: 5px;" id="search">
+        角色名称：<input type="text" />
+        <input type="button" value="查询" /></div>
+    @using (Html.BeginForm("RoleList", "Role", FormMethod.Post))
+    {    <table id="mytable">
+        </table> 
+    }
+</div>
+<!--新增窗口-->
+<div id="win" class="easyui-window" title="新增窗口" style="width: 300px; height: 150px;
+    padding: 5px;">
+</div>
+<!--分配权限窗口-->
+<div id="permission" class="easyui-window" title="分配权限">
+</div>
+<!--分配功能项窗口-->
+<div id="menu" class="easyui-window" title="分配功能项">
+</div>

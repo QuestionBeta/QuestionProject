@@ -1,0 +1,35 @@
+﻿@{
+    Layout = null;
+}
+@using (Html.BeginForm("SaveData", "AllocationPermission", FormMethod.Post, new { @id="myform1" }))
+{
+    if (Model != null)
+    {
+        //遍历所有权限
+        foreach (var item in Model.PermissionList)
+        {
+            bool flag = false;
+            //遍历角色下所有权限，如果存在相同权限则选中，反之则不选
+            foreach (var permission in Model.Role_PermissionList)
+            {
+                if (permission.permission_id == item.id)
+                {
+                    flag = true;
+                    break;
+                }
+            }
+            <span>@Html.CheckBox("permission", flag, new { @value = "" + item.id + "" }) @item.name
+            </span>  
+        }
+    }
+    @Html.Hidden("id", (int)ViewBag.Role)
+    <div class="control-submit">
+        <div class="controls">
+            <span style="padding-left: 100px;">
+                <input type="button" onclick="SavePermission(false)" id="btnsave" style="width: 50px" class="input_default "
+                    value="保存" /></span> <span>
+                        <input style="width: 50px" onclick="closeDialog('#permission')" type="button" id="btncancel"
+                            class="input_default " value="取消" /></span>
+        </div>
+    </div>
+}

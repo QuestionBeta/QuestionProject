@@ -1,0 +1,56 @@
+﻿<form id="form" name="form" class="form-horizontal" method="post" style="margin: 10px">
+@if (Model != null)
+{
+    <div class="control-group">
+        <label class="control-label">
+            权限名称:</label>
+        <div class="controls">
+            <input type="text" class="input_default" id="name" name="name" value="@Model.name" />
+            <input type="hidden" class="input_default" id="id" name="id" value="@Model.id"/>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">
+            排序号:</label>
+        <div class="controls">
+            <input type="text" class="input_default" id="order_num" name="order_num" value="@Model.order_num" />
+        </div>
+    </div>
+    <div class="control-submit">
+        <div class="controls">
+            <span style="padding-left: 100px;">
+                <input type="button" onclick="SaveBtn(false)" id="btnsave" style="width: 50px" class="input_default "
+                    value="保存" /></span> <span>
+                        <input style="width: 50px" onclick="closeDialog(false)" type="button" id="btncancel"
+                            class="input_default " value="取消" /></span>
+        </div>
+    </div>
+}
+else
+{
+    <div class="control-group">
+        <label class="control-label">
+            权限名称:</label>
+        <div class="controls">
+            <input type="text" class="input_default" id="name" name="name" />
+            <input type="hidden" class="input_default" id="id" name="id" />
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">
+            排序号:</label>
+        <div class="controls">
+            <input type="text" class="input_default" id="order_num" name="order_num"  />
+        </div>
+    </div>
+    <div class="control-submit">
+        <div class="controls">
+            <span style="padding-left: 100px;">
+                <input type="button" onclick="SaveBtn(true)" id="btnsave" style="width: 50px" class="input_default "
+                    value="保存" /></span> <span>
+                        <input style="width: 50px" onclick="closeDialog(true)" type="button" id="btncancel"
+                            class="input_default " value="取消" /></span>
+        </div>
+    </div>
+}
+</form>
