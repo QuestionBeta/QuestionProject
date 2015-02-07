@@ -9,13 +9,29 @@
             <center>
                 <h3>@Model.title</h3>
                 <p>
-                edit by @Model.User.user_name @Model.time &nbsp;@if(Model.User.user_login_name == Context.User.Identity.Name){ @Html.ActionLink("编辑", "/AddBug/" + Model.id)  @Html.ActionLink(" 删除", "/AddBug/" + Model.id)}</p>
+                    edit by @Model.User.user_name @Model.time &nbsp;@if (Model.User.user_login_name == Context.User.Identity.Name)
+                                                                    { @Html.ActionLink("编辑", "/AddBug/" + Html.Encrypt(Model.id.ToString()))  }</p>
             </center>
             <hr />
-            <div style="padding:8px">  
-            <div style="text-indent:30px">
-              @Html.Raw(Model.description)
+            <div style="padding: 8px">
+                <div style="text-indent: 30px">
+                    @Html.Raw(Model.description)
+                </div>
             </div>
+            <hr />
+            <div style="width:98%; margin:auto">
+	        <div class="ds-thread" data-thread-key="@Html.Encrypt(Model.id.ToString())" data-title="@Model.title" data-url="/BUG/Detail/@Html.Encrypt(Model.id.ToString())"></div>
+                <script type="text/javascript">
+    var duoshuoQuery = { short_name: "xfeixiang" };
+    (function () {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript'; ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0]
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+	</script>
             </div>
         }
     </div>

@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using DataBase.AppData;
 using System.IO;
 using Shop.Web.Models;
+using Shop.Web.Helper;
 
 namespace Question.Beta.Controllers
 {
@@ -22,15 +23,29 @@ namespace Question.Beta.Controllers
         #endregion
 
         #region -- 添加BUG --
-        [AuthAttribute(Code = "member")]
-        public ActionResult AddBUG(int? id)
+        [AuthAttribute(Code = "1")]
+        public ActionResult AddBUG(string id)
         {
             ViewBag.Msg = "";
             XFX_Bug bugModel = null;
-            //编辑操作
-            if (id != null && id != 0)
+            int tmpId = 0;
+            int tmp = 0;
+            //判断参数为空
+            if (!string.IsNullOrEmpty(id))
             {
-                bugModel = bughandler.GetDataById(id);
+                //解密参数，根据参数删除记录
+                id = MD5Helper.Decrypt(id);
+                if (!int.TryParse(id, out tmp))
+                {
+                    return Content("字符串转换失败");
+                }
+                tmpId = int.Parse(id);
+            }
+            
+            //编辑操作
+            if (tmpId != 0)
+            {
+                bugModel = bughandler.GetDataById(tmpId);
                 if (bugModel == null)
                 {
                     ModelState.AddModelError("title", "获取标题失败！");
@@ -50,12 +65,17 @@ namespace Question.Beta.Controllers
             return View(bugModel);
         }
 
+        
         [HttpPost]
-        [AuthAttribute(Code = "member")]
-        public ActionResult AddBUG(XFX_Bug bug, int? id)
+        [AuthAttribute(Code = "1")]
+        public ActionResult AddBUG(XFX_Bug bug, string id)
         {
             //初始化分类信息
             InitCategory(bug.category);
+            ModelState.Remove("iscomplete");
+            ModelState.Remove("url");
+            ModelState.Remove("anwser");
+            ModelState.Remove("id");
             if (!ModelState.IsValid)
             {
                 return View();
@@ -65,8 +85,20 @@ namespace Question.Beta.Controllers
             //判断图片是否上传成功
             uploadFlag = ImgUpload(Request);
             
-            XFX_Bug bugA = bughandler.GetDataById(id);
-            if (bugA == null && id != null && id != 0)
+            int tmpId = 0;
+            int tmp = 0;
+            if (!string.IsNullOrEmpty(id))
+            {
+                //解密参数，根据参数删除记录
+                id = MD5Helper.Decrypt(id);
+                if (!int.TryParse(id, out tmp))
+                {
+                    return Content("字符串转换失败");
+                }
+                tmpId = int.Parse(id);
+            }
+            XFX_Bug bugA = bughandler.GetDataById(tmpId);
+            if (bugA == null && tmpId != null && tmpId != 0)
             {
                 ViewBag.Msg = "页面错误";
                 return View();
@@ -107,7 +139,7 @@ namespace Question.Beta.Controllers
             //编辑操作
             if (id != null)
             {
-                bugModel = bughandler.GetDataById(id);
+                bugModel = bughandler.GetDataById(tmpId);
                 if (bugModel == null)
                 {
                     ModelState.AddModelError("url", "获取标题失败！");
@@ -150,16 +182,18 @@ namespace Question.Beta.Controllers
         #endregion
 
         #region -- BUG详情页面 --
-        public ActionResult Detail(int? id)
+        public ActionResult Detail(string id)
         {
             bool flag = true;
-            if (id == null)
+            int tmpId = 0;
+            if (string.IsNullOrEmpty(id))
             {
                 return View();
             }
             try
             {
-                int tmpId = (int)id;
+                id = MD5Helper.Decrypt(id);
+                tmpId = int.Parse(id);
 
             }
             catch
@@ -167,8 +201,7 @@ namespace Question.Beta.Controllers
                 flag = false;
             }
 
-            var bugData = bughandler.GetDataById(id);
-
+            var bugData = bughandler.GetDataById(tmpId);
             return View(bugData);
         }
         #endregion
@@ -252,6 +285,13 @@ namespace Question.Beta.Controllers
                 var tmpData = category.Select(p => new { name = p.name, value = p.id }).ToList();
                 ViewData["value"] = new SelectList(tmpData, "value", "name", categoryId);
             }
+        }
+        #endregion
+
+        #region -- 获取所有BUG列表 --
+        public ActionResult GetBugListBuyUser()
+        {
+            return View();
         }
         #endregion
     }

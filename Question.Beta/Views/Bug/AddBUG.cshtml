@@ -3,9 +3,13 @@
     ViewBag.Title = "发布BUG信息";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<script type="text/javascript" src="@Url.Content("~/Scripts/Question/jquery-1.9.1.min.js")"></script>
 <!--加载富文本框-->
 <script type="text/javascript" src="@Url.Content("~/Content/editor/kindeditor-min.js")"></script>
 <script charset="utf-8" src="@Url.Content("~/Content/editor/zh_CN.js")" type="text/javascript"></script>
+   <script type="text/javascript" src="@Url.Content("~/Scripts/Question/jquery.dialog.js")"></script>
+@*<script src="/Scripts/jquery.validate.min.js" type="text/javascript"></script>
+<script src="/Scripts/jquery.validate.unobtrusive.js" type="text/javascript"></script>*@
 <style type="text/css">
     .form-group
     {
@@ -23,113 +27,28 @@
     }
 </style>
 <script type="text/javascript">
-    var editor;
     var editor1;
-        KindEditor.ready(function (K) {
-            editor = K.create('#anwser', {
-                items: ['fontname', 'fontsize', '|', 'textcolor', 'bgcolor', 'bold', 'italic', 'underline',
-                            'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
-                            'insertunorderedlist', '|', 'insertfile', 'table', 'link', 'fullscreen', 'wordpaste', 'source'],
-                uploadJson: '@Url.Content("~/Content/editor/asp.net/upload_json.ashx")',
-                fileManagerJson: '@Url.Content("~/Content/editor/asp.net/file_manager_json.ashx")',
-                allowFileManager: true,
-                pasteType: 1
-            });
-            editor1 = K.create('#description', {
-                items: ['fontname', 'fontsize', '|', 'textcolor', 'bgcolor', 'bold', 'italic', 'underline',
-                            'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
-                            'insertunorderedlist', '|', 'insertfile','image', 'table', 'link', 'fullscreen', 'wordpaste', 'source'],
-                uploadJson: '@Url.Content("~/Content/editor/asp.net/upload_json.ashx")',
-                fileManagerJson: '@Url.Content("~/Content/editor/asp.net/file_manager_json.ashx")',
-                allowFileManager: true,
-                pasteType: 1
-            });
-            K('#upload').click(function () {
-                editor.loadPlugin('image', function () {
-                    editor.plugin.imageDialog({
-                        showRemote: false,
-                        imageUrl: K('#img').val(),
-                        clickFn: function (url, title, width, height, border, align) {
-                            K('#img').val(url);
-                            editor.hideDialog();
-                        }
-                    });
-                });
-            });
+    KindEditor.ready(function (K) {
+        editor1 = K.create('#description', {
 
-            K('#btnsave').click(function () {
-                var title = $('#title').attr('value');
-                var role = $('#role').attr('value');
-                var jszc = $('#jszc').attr('value');
-                var sex = $('#sex').attr('value');
-                var zjkc = $('#zjkc').attr('value');
-                var img = $('#img').attr('value');
-                var chry = $('#chry').attr('value');
-                var content = editor.html();
-                $.ajax({
-                    type: 'post',
-                    url: '../ajax/jxtd/add.ashx',
-                    data: { 'title': title, 'role': role, 'jszc': jszc, 'sex': sex, 'zjkc': zjkc, 'img': img,'chry':chry,'content':content },
-                    success: function (r) {
-                        if (r == "0") {
-                            AddWindow(K, '添加成功');
-                        } else {
-                            AddWindow(K, '添加失败');
-                        }
-                    }
-                });
-            });
+            items: ['formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+                            'removeformat', 'strikethrough', 'lineheight', '|', 'justifyleft', 'justifycenter', 'justifyright', 'justifyfull', 'indent', 'outdent', 'subscript', 'superscript', 'clearhtml', 'quickformat', 'selectall', 'insertorderedlist',
+                            'insertunorderedlist', '|', 'image', 'insertfile', 'table', 'link', 'unlink', 'fullscreen', 'pagebreak', 'wordpaste',  'code', '|', 'undo', 'redo'],
+            uploadJson: '@Url.Content("~/Content/editor/asp.net/upload_json.ashx")',
+            fileManagerJson: '@Url.Content("~/Content/editor/asp.net/file_manager_json.ashx")',
+            allowFileManager: true,
+            pasteType: 1
         });
-        function AddWindow(K, type) {
-            var dialog = K.dialog({
-                width: 500,
-                height: 150,
-                title: '<span style="color:green">提示信息<span>',
-                body: '<div style="margin:10px;font-size:13x;color:red"><strong>' + type + '</strong></div>',
-                closeBtn: {
-                    name: '关闭',
-                    click: function (e) {
-                        dialog.remove();
-                    }
-                },
-                yesBtn: {
-                    name: '确定',
-                    click: function (e) {
-                        if (type == "添加成功") {
-                            location.href = "list.aspx";
-                        } else {
-                            dialog.remove();
-                        }
-                    }
-                }
-            });
-        }
+    });
     var msg = '@ViewBag.Msg';
     if (msg != '') {
         $.dialog.width = "350px";
-        $.dialog.alert("提示信息", msg,1,true, function () {
+        $.dialog.alert("提示信息", msg,true, function () {
             if (msg == "发布成功" || msg == '保存成功') {
                 location.href = "/";
             }
         });
     } 
-    //上传文件
-    function uploadMsg(fid, name) {
-        var frame = document.getElementById(fid).contentWindow; //获取iFrame窗口中加载的网页对象 
-        var file = document.getElementById(fid).contentWindow.document.getElementById("fileField");
-        var formControl = frame.document.getElementById("uploadform");
-        if (file == null || file == "" || file.value == "" || file.value == '') {
-            $.messager.alert('提示信息', '请选择文件');
-        } else {
-            frame.window.setHiddenValue(name);
-            formControl.submit();
-        }
-    }
-
-    //相应信息
-    function callbackMsg(msg) {
-        $.messager.alert('提示信息', msg);
-    }
 </script>
 <div class="container content">
     <div class="row">
@@ -192,12 +111,12 @@
                     @Html.ValidationMessageFor(model => model.description)
                 </div>
             </div>
-            <div class="form-group" style="display:none">
+            <div class="form-group">
                 <div class="col-sm-2 control-label">
                     @Html.LabelFor(model => model.iscomplete)
                 </div>
                 <div class="col-sm-10 content">
-                    @Html.EditorFor(model => model.iscomplete, new { @class = "form-control" })
+                    @Html.EditorFor(model => model.iscomplete, new { @class = "form-control" }) 草稿不在首页显示
                     @Html.ValidationMessageFor(model => model.iscomplete)
                 </div>
             </div>
@@ -218,7 +137,7 @@
         else
         {
          <input type="hidden" onclick="callbackMsg(this.value)" id="mywins" />
-            using (Html.BeginForm("AddBug", "Bug", new { id = Model.id }, FormMethod.Post, new { @id = "myform", @class = "form-horizontal", @style = "", @enctype = "multipart/form-data" }))
+            using (Html.BeginForm("AddBug", "Bug", new { id = Html.Encrypt(Model.id.ToString()) }, FormMethod.Post, new { @id = "myform", @class = "form-horizontal", @style = "", @enctype = "multipart/form-data" }))
             { 
             @Html.ValidationSummary(true)
             <div class="form-group">
@@ -275,16 +194,16 @@
                     @Html.ValidationMessageFor(model => model.description)
                 </div>
             </div>
-            <div class="form-group" style="display:none">
+            <div class="form-group" >
                 <div class="col-sm-2 control-label">
                     @Html.LabelFor(model => model.iscomplete)
                 </div>
                 <div class="col-sm-10 content">
-                    @Html.EditorFor(model => model.iscomplete, new { @class = "form-control" })
+                    @Html.EditorFor(model => model.iscomplete, new { @class = "form-control" }) 草稿不在首页显示
                     @Html.ValidationMessageFor(model => model.iscomplete)
                 </div>
             </div>
-            <div class="form-group" style="display:none">
+          @*  <div class="form-group" style="display:none">
                 <div class="col-sm-2 control-label">
                     @Html.LabelFor(model => model.anwser)
                 </div>
@@ -292,7 +211,7 @@
                     @Html.TextAreaFor(model => model.anwser, new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.anwser)
                 </div>
-            </div>
+            </div>*@
             <div class="form-group" style="margin: auto; padding: 15px; text-align: center;">
                     <input type="submit" value="保存" class="btn btn-primary" id="pubBtn" style="line-height: 30px; margin: 5px; width: 120px;" />
             </div>

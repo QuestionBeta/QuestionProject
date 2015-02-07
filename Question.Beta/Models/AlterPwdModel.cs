@@ -13,7 +13,7 @@ namespace Shop.Web.Models
         [Required(ErrorMessage = "请输入{0}")]        
         [RegularExpression(@"^(([a-z]+)|([A-Z]+)).([0-9]+)", ErrorMessage = "密码格式有误")]
         [StringLength(18, MinimumLength = 6, ErrorMessage = "{0}长度过大或过小")]
-        [Remote("ValidatePwd", "Home", HttpMethod = "post", ErrorMessage = "旧密码输入错误")]
+        [Remote("ValidatePwd", "AlterPwd", HttpMethod = "post", ErrorMessage = "旧密码输入错误")]
         /// <summary>
         /// 旧密码
         /// </summary>

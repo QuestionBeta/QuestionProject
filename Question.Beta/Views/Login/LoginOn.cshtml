@@ -1,6 +1,6 @@
 ﻿@model Shop.Web.Models.LoginModel
 @{
-    ViewBag.Title = "网上商城登录";
+    ViewBag.Title = "登录";
     Layout = null;
 }
 <link href="@Url.Content("~/Content/css/bootstrap.min.css")" rel="stylesheet" type="text/css" />
@@ -11,15 +11,15 @@
 <script type="text/javascript">
     var result = '@ViewBag.Data';
     var alertmsg = '';
-    
-    if (result != '') {
+    //window.parent.submitForm();
+    if (result != '') {       
         alertmsg = result == 0 ? '登录成功' : '登录失败';
         window.parent.openAlert(alertmsg);
         //location.href = this.href;
     }
 </script>
 <div style="width: 98%; margin: auto;" class="login_form">
-    @using (@Html.BeginForm("LoginOn", "Login", FormMethod.Post, new { @id = "myform", @class = "form-horizontal", @style = "" }))
+    @using (Html.BeginForm("LoginOn", "Login", FormMethod.Post, new { @id = "myform", @class = "form-horizontal", @style = "" }))
     { 
         @Html.ValidationSummary(true)
         <div class="form-group">

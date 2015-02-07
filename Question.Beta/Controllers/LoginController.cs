@@ -10,6 +10,7 @@ using Question.Beta.Controllers;
 
 using DataBase.AppData;
 using Shop.Web.Helper;
+using WebUIFunction;
 
 namespace Shop.Web.Controllers
 {
@@ -158,6 +159,7 @@ namespace Shop.Web.Controllers
         [HttpPost]
         public ActionResult LoginOn(LoginModel model)
         {
+            bool flag = false;
             //判断验证是否通过
             if (!ModelState.IsValid)
             {
@@ -167,7 +169,7 @@ namespace Shop.Web.Controllers
             if (Dmodel == null)
             {
                 ViewBag.Data = 1;
-                return View();
+                return View(flag.ToString());
             }
 
             //判断用户是否禁用，禁用提示信息
@@ -190,7 +192,14 @@ namespace Shop.Web.Controllers
             //response.Write(serializer.Serialize(Dmodel));
             //保存身份信息，参数说明可以看提示
             //string roles = "admin,member,developer";
-            FormsAuthenticationTicket Ticket = new FormsAuthenticationTicket(1, model.user_login_name, DateTime.Now, DateTime.Now.AddHours(2), false, Dmodel.user_role);
+            SysUser_RoleFun fun = new SysUser_RoleFun();
+            List<SysUser_Role> role = fun.GetRoleListByUser(Dmodel.id);
+            string user_role = string.Empty;
+            if (role != null && role.Count > 0)
+            {
+                user_role = role.FirstOrDefault().SysRole.jb;
+            }
+            FormsAuthenticationTicket Ticket = new FormsAuthenticationTicket(1, model.user_login_name, DateTime.Now, DateTime.Now.AddHours(2), false, user_role);
             HttpCookie Cookie = new HttpCookie(FormsAuthentication.FormsCookieName, FormsAuthentication.Encrypt(Ticket));//加密身份信息，保存至Cookie
             Cookie.HttpOnly = true; //客户端无法访问Cookie
             Response.Cookies.Add(Cookie);
@@ -210,7 +219,7 @@ namespace Shop.Web.Controllers
             {
 
             }
-            return View(result);
+            return Content(result.ToString());
         }
     }
 }

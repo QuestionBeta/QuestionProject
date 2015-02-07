@@ -22,7 +22,7 @@ namespace Shop.Web.Controllers
             else
             {
                 error.Message = "未找到网页";
-                error.Url = "";
+                //return Redirect(HttpContext.UrlReferrer);
             }
 
             return View(error);

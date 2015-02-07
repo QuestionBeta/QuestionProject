@@ -1,8 +1,9 @@
 ﻿@{
     ViewBag.Title = "首页-Find Me";
 }
+<script type="text/javascript" src="@Url.Content("~/Scripts/Question/jquery-1.9.1.min.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/Scripts/Question/datapager.js")"></script>
-<script type="text/javascript">
+@*<script type="text/javascript">
     $(function () {
 
     });
@@ -15,7 +16,7 @@
         var keywords = document.getElementById("keywords").value;
         return keywords;
     }
-</script>
+</script>*@
 <div class="container content">
     <div class="row">
         <div class="col-md-9" role="main">
@@ -27,7 +28,7 @@
             <div role="complementary" class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix-top">
             <div style="padding: 5px; border-bottom: 1px solid #eaeaea">
                    <input type="text" class="form-control" id="keywords" style="width:170px;float:left" placeholder="请输入标题或者关键字"/>
-                   <input type="button" class="btn btn-info" value="搜索" style="padding:5px; margin-left:5px;width:60px" onclick="javascript:location.href = '/Search/SearchResult/'+ GetKeyWords()"/>
+                   <input type="button" class="btn btn-info" value="搜索" style="padding:5px; margin-left:5px;width:60px" id="btnsearch"/>
                 </div>
                 <div style="padding: 5px; border-bottom: 1px solid #eaeaea">
                     <h5>

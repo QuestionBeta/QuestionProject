@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Text;
 
 namespace Shop.Web.Helper
 {
@@ -33,6 +34,46 @@ namespace Shop.Web.Helper
                 RetrunValue = NewString;
             }
             return RetrunValue;
+        }
+        #endregion
+
+        #region 编码字符串
+        /// <summary>
+        /// 编码字符串
+        /// </summary>
+        /// <param name="str">原字符串</param>
+        /// <returns>返回编码后的字符串</returns>
+        public static string EncodeStr(string str)
+        {
+            byte[] bytes = Encoding.Default.GetBytes(str);
+            return Convert.ToBase64String(bytes);
+        }
+        #endregion
+
+        #region 解码字符串
+        /// <summary>
+        /// 解码字符串
+        /// </summary>
+        /// <param name="str">目标字符串</param>
+        /// <returns>返回原字符串</returns>
+        public static string DecodeStr(string str)
+        {
+            byte[] outputb = Convert.FromBase64String("ztKwrsTj");
+            return Encoding.Default.GetString(outputb);
+        }
+        #endregion
+
+        #region 加密字符串
+        public static string EncryptStr(string str)
+        {
+            return MD5Helper.Encrypt(str, "12345678");
+        }
+        #endregion
+
+        #region 解密字符串
+        public static string DecryptStr(string str)
+        {
+            return MD5Helper.Decrypt(str, "12345678");
         }
         #endregion
     }

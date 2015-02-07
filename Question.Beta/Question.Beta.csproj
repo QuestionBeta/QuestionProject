@@ -42,7 +42,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Content\editor\asp.net\bin\LitJSON.dll</HintPath>
     </Reference>
-    <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Web.Mvc, Version=3.0.0.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Web.WebPages" />
     <Reference Include="System.Web.Helpers" />
     <Reference Include="Microsoft.CSharp" />
@@ -67,9 +67,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Areas\HTGL\Controllers\AdminController.cs" />
+    <Compile Include="Areas\HTGL\Controllers\AdminLoginController.cs" />
+    <Compile Include="Areas\HTGL\Controllers\AllocationPermissionController.cs" />
     <Compile Include="Areas\HTGL\Controllers\MenuController.cs" />
+    <Compile Include="Areas\HTGL\Controllers\PermissionController.cs" />
+    <Compile Include="Areas\HTGL\Controllers\RoleController.cs" />
+    <Compile Include="Areas\HTGL\Controllers\RoleMenuController.cs" />
     <Compile Include="Areas\HTGL\Controllers\UserManageController.cs" />
+    <Compile Include="Areas\HTGL\Controllers\UserRoleController.cs" />
     <Compile Include="Areas\HTGL\HTGLAreaRegistration.cs" />
+    <Compile Include="Areas\HTGL\Models\RolePermissionModel.cs" />
+    <Compile Include="Controllers\AlterPwdController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\BugController.cs" />
     <Compile Include="Controllers\CategoryController.cs" />
@@ -78,12 +86,15 @@
     <Compile Include="Controllers\MyQuestionController.cs" />
     <Compile Include="Controllers\NavigationController.cs" />
     <Compile Include="Controllers\PersonCenterController.cs" />
+    <Compile Include="Controllers\PersonInfomationController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Controllers\UserControlController.cs" />
+    <Compile Include="Controllers\UserManageController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helper\EmailHelper.cs" />
+    <Compile Include="Helper\HtmlMethodHelper.cs" />
     <Compile Include="Helper\MD5Helper.cs" />
     <Compile Include="Helper\StringHelper.cs" />
     <Compile Include="Helper\ValidateCodeHelper.cs" />
@@ -93,6 +104,7 @@
     <Compile Include="Models\DTError.cs" />
     <Compile Include="Models\ErrorAttribute.cs" />
     <Compile Include="Models\LoginModel.cs" />
+    <Compile Include="Models\PersonInfoModel.cs" />
     <Compile Include="Models\RegisterModel.cs" />
     <Compile Include="Areas\HTGL\Models\TreeMenu.cs" />
     <Compile Include="Models\SearchModel.cs" />
@@ -593,6 +605,49 @@
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\home_login.css" />
     <Content Include="Content\images\not_found.jpg" />
+    <Content Include="Content\layout\css\bootstrap.min.css" />
+    <Content Include="Content\layout\css\icons.css" />
+    <Content Include="Content\layout\css\icons\1093009.png" />
+    <Content Include="Content\layout\css\icons\1093010.png" />
+    <Content Include="Content\layout\css\icons\1182068.png" />
+    <Content Include="Content\layout\css\icons\1182069.png" />
+    <Content Include="Content\layout\css\icons\37557.png" />
+    <Content Include="Content\layout\css\icons\504613.png" />
+    <Content Include="Content\layout\css\icons\516588.png" />
+    <Content Include="Content\layout\css\icons\516589.png" />
+    <Content Include="Content\layout\css\icons\516590.png" />
+    <Content Include="Content\layout\css\icons\516591.png" />
+    <Content Include="Content\layout\css\icons\517754.png" />
+    <Content Include="Content\layout\css\icons\517758.png" />
+    <Content Include="Content\layout\css\icons\517761.png" />
+    <Content Include="Content\layout\css\icons\517763.png" />
+    <Content Include="Content\layout\css\icons\517764.png" />
+    <Content Include="Content\layout\css\icons\517770.png" />
+    <Content Include="Content\layout\css\icons\517772.png" />
+    <Content Include="Content\layout\css\icons\517773.png" />
+    <Content Include="Content\layout\css\icons\517774.png" />
+    <Content Include="Content\layout\css\icons\517777.png" />
+    <Content Include="Content\layout\css\icons\517778.png" />
+    <Content Include="Content\layout\css\icons\9058.png" />
+    <Content Include="Content\layout\css\icons\icon16_16.ico" />
+    <Content Include="Content\layout\css\icons\icon24_24.ico" />
+    <Content Include="Content\layout\css\icons\icon_24_24.ico" />
+    <Content Include="Content\layout\css\icons\loading.png" />
+    <Content Include="Content\layout\css\jquery.dialog.css" />
+    <Content Include="Content\layout\css\jquery.layout.css" />
+    <Content Include="Content\layout\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Content\layout\js\common.js" />
+    <Content Include="Content\layout\js\dialogFun.js" />
+    <Content Include="Content\layout\js\jquery-1.9.1.min.js" />
+    <Content Include="Content\layout\js\jquery.dialog.js" />
+    <Content Include="Content\layout\js\jquery.layout.js" />
+    <Content Include="Content\layout\js\jquery.tab.js" />
+    <Content Include="Content\layout\js\jquery.table.js" />
+    <Content Include="Content\layout\js\jquery.tree.js" />
+    <Content Include="Content\layout\js\main.js" />
+    <Content Include="Content\layout\js\mainFrame.js" />
+    <Content Include="Content\layout\js\require.js" />
+    <Content Include="Content\pager.css" />
     <Content Include="Content\Uploads\20141130223418660.jpg" />
     <Content Include="Content\Uploads\20141130224053921.jpg" />
     <Content Include="Global.asax" />
@@ -613,15 +668,24 @@
     <Content Include="Content\themes\base\images\ui-icons_cd0a0a_256x240.png" />
     <Content Include="lib\DataPager.dll" />
     <Content Include="PublishLog\发布日志.txt" />
+    <Content Include="Scripts\Question\adminmain.js" />
+    <Content Include="Scripts\Question\bugoperation.js" />
     <Content Include="Scripts\Question\datapager.js" />
     <Content Include="Scripts\Question\easyui-lang-zh_CN.js" />
     <Content Include="Scripts\Question\function.js" />
+    <Content Include="Scripts\Question\initTree.js" />
     <Content Include="Scripts\Question\jquery-1.7.2.min.js" />
     <Content Include="Scripts\Question\jquery-1.9.1.min.js" />
     <Content Include="Scripts\Question\jquery.dialog.js" />
     <Content Include="Scripts\Question\jquery.easyui.min.js" />
     <Content Include="Scripts\Question\ligerBuild.min.js" />
-    <Content Include="Web.config" />
+    <Content Include="Scripts\Question\login.js" />
+    <Content Include="Scripts\Question\register.js" />
+    <Content Include="Scripts\Question\search.js" />
+    <Content Include="Scripts\Question\searchmain.js" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -826,10 +890,17 @@
     <Content Include="Areas\HTGL\Views\Menu\List.cshtml" />
     <Content Include="Areas\HTGL\Views\Menu\UpdateMenu.cshtml" />
     <Content Include="Areas\HTGL\Views\Shared\_Layout.cshtml" />
-    <Content Include="Areas\HTGL\Views\UserManage\List.cshtml" />
     <Content Include="Areas\HTGL\Views\UserManage\Index.cshtml" />
     <Content Include="Areas\HTGL\Views\UserManage\UpdateUser.cshtml" />
-    <Content Include="Areas\HTGL\Views\UserManage\RoleList.cshtml" />
+    <Content Include="Areas\HTGL\Views\Role\RoleList.cshtml" />
+    <Content Include="Areas\HTGL\Views\Role\UpdateControl.cshtml" />
+    <Content Include="Areas\HTGL\Views\Permission\UpdateControl.cshtml" />
+    <Content Include="Areas\HTGL\Views\Permission\PermissionList.cshtml" />
+    <Content Include="Areas\HTGL\Views\AllocationPermission\PermissionListControl.cshtml" />
+    <Content Include="Areas\HTGL\Views\UserRole\RoleListControl.cshtml" />
+    <Content Include="Areas\HTGL\Views\RoleMenu\MenuList.cshtml" />
+    <Content Include="Areas\HTGL\Views\Error\Show.cshtml" />
+    <Content Include="Areas\HTGL\Views\AdminLogin\Index.cshtml" />
     <None Include="Content\css\bootstrap-theme.css.map" />
     <None Include="Content\css\bootstrap.css.map" />
     <Content Include="Content\editor\asp.net\file_manager_json.ashx" />
@@ -1251,9 +1322,9 @@
     <None Include="Content\editor\themes\simple\.svn\all-wcprops" />
     <None Include="Content\editor\themes\simple\.svn\entries" />
     <None Include="Content\editor\themes\simple\.svn\text-base\simple.css.svn-base" />
-    <None Include="Content\fonts\glyphicons-halflings-regular.eot" />
-    <None Include="Content\fonts\glyphicons-halflings-regular.ttf" />
-    <None Include="Content\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="Views\Shared\_Header.cshtml" />
     <Content Include="Views\Shared\_Footer.cshtml" />
     <Content Include="Views\Navigation\GetNavigation.cshtml" />
@@ -1276,6 +1347,20 @@
     <Content Include="Views\Search\BugList.cshtml" />
     <Content Include="Views\Search\LoadSearchResult.cshtml" />
     <Content Include="Views\Search\LoadData.cshtml" />
+    <Content Include="Views\PersonCenter\InitLeftPanel.cshtml" />
+    <Content Include="Views\PersonCenter\InitRightPanel.cshtml" />
+    <Content Include="Views\PersonCenter\InitTopPanel.cshtml" />
+    <Content Include="Views\PersonCenter\InitBottomPanel.cshtml" />
+    <Content Include="Views\PersonCenter\Index.cshtml" />
+    <Content Include="Content\layout\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\layout\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="Content\layout\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="Views\Shared\LayoutChildPage.cshtml" />
+    <Content Include="Views\MyQuestion\GetBugList.cshtml" />
+    <Content Include="Views\UserManage\Index.cshtml" />
+    <Content Include="Views\PersonInfomation\Index.cshtml" />
+    <Content Include="Views\AlterPwd\Index.cshtml" />
+    <Content Include="Views\MyQuestion\LoadDataByPage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DataBase\DataBase.csproj">

@@ -113,7 +113,7 @@
             //            $('#global_channel_tree').find('li').remove();
             $.ajax({
                 type: 'post',
-                url: '/HTGL/Admin/LeftMenuNav?time=' + (new Date()).getDate() + (new Date()).getSeconds() + (new Date()).getMilliseconds(),
+                url: '@Html.SetRedrictURL("/Admin/LeftMenuNav",true)',
                 success: function (data) {
                     $("#global_channel_tree").ligerTree({
                         data: eval(data),

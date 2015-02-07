@@ -23,15 +23,16 @@
         <li>
           <a href="../customize/">技术论坛</a>
         </li>*@
+   
             </ul>
             <ul id="useArea" class="nav navbar-nav navbar-right">
             @if (Request.IsAuthenticated)
             {
                 <li>
-                    <a style="width:160px" target="_blank" href="#">个人中心(@Context.User.Identity.Name)</a>
+                    <a style="width:160px" target="_blank" href="@Url.Action("/","PersonCenter")">个人中心(@Context.User.Identity.Name)</a>
                 </li>
                  <li>
-                    <a href="javascript:void(0)" style="width:86px" id="loginout123">退出登录</a>
+                    <a href="javascript:void(0)" style="width:86px" id="loginout">退出登录</a>
                 </li>
             }
             else

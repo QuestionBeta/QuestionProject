@@ -23,6 +23,19 @@
     {
         margin:5px;
     }
+    /*******************  复选框样式  ******************/
+    input[type='checkbox']
+    {
+        padding: 5px;
+        text-align: center;
+        vertical-align: middle;
+    }
+    #role span
+    {
+        line-height: 30px;
+        padding: 5px;
+    }
+     /*******************  复选框样式  ******************/
 </style>
 <script type="text/javascript">
     $(function () {
@@ -30,7 +43,7 @@
         $('#mytable').datagrid({
             type: 'POST',
             idField: "id",
-            url: '/UserManage/GetData',
+            url: 'GetData',
             loadMsg: '加载中...',
             height: 'auto',
             width: '100%',
@@ -106,12 +119,21 @@
                         $.messager.alert('提示信息', '请先选择行', 'icon-add', null);
                     }
                 }
-                }]
+                }, '-', { text: '分配角色', iconCls: 'icon-delete', handler: function (index, value, rowData) {
+                    //                    delMenu(rowData.id, rowData.type);
+                    var table = $('#mytable').datagrid('getSelected');
+                    if (table != null) {
+                        AllocationRole(table.id);
+                    } else {
+                        $.messager.alert('提示信息', '请先选择行', 'icon-add', null);
+                    }
+                }
+            }]
         });
         $('#pid').attr('disabled', true);
         $('#pcategory').change(change());
-        widow();
-
+        widow('#win');
+        widow('#role');
     });
 
     function uploadMsg(fid, name) {
@@ -142,9 +164,9 @@
     }
 
     //打开窗口
-    function widow() {
-        $('#win').window({
-            title: '操作选项',
+    function widow(containerid) {
+        $(containerid).window({
+            title: '操作中心',
             width: 660,
             height: 380,
             iconCls: 'icon-add',
@@ -167,7 +189,7 @@
             //                alert(flag);
             $.ajax({
                 type: 'post',
-                url: '/UserManage/UpdateUser',
+                url: 'UpdateUser',
                 data: $("#form").serialize(),
                 success: function (r) {
                     if (r == "用户信息编辑成功") {
@@ -186,7 +208,7 @@
         if (flag == true) {
             $.ajax({
                 type: 'post',
-                url: '/UserManage/UpdateUser',
+                url: 'UpdateUser',
                 data: $("#form").serialize(),
                 success: function (r) {
                     if (r == "用户信息新增成功") {
@@ -208,7 +230,7 @@
     function delMenu(id) {
         $.messager.confirm('操作提示', '确定要删除？', function (r) {
             if (r) {
-                url = "/UserManage/DelUser";
+                url = "DelUser";
                 parameter = { id: id };
                 $.post(url, parameter, function (data) {
                     if (data == "0") {
@@ -235,7 +257,7 @@
         $.messager.confirm('操作提示', '确定要' + msg + '该用户？', function (r) {
             if (r) {
                 // alert(id);
-                url = "/UserManage/DisabledUser";
+                url = "DisabledUser";
                 parameter = { id: id,isopen:isopen };
                 $.post(url, parameter, function (data) {
                     if (data == "0") {
@@ -259,10 +281,45 @@
     }
 
     //新增为true,编辑为false
-    function closeDialog(flag) {
-        $('#win').window('close');
+    function closeDialog(containerid) {
+        $(containerid).window('close');
     }
-    
+
+    /**** 分配角色处理函数开始 ****/
+    function AllocationRole(user_id) {
+        $("#role").load("/@ViewBag.UrlPath/UserRole/UserRoleList/" + user_id);
+        $('#role').window('open');
+    }
+    //保存权限信息
+    function SavePermission() {
+        var id = $('#id').attr('value');
+        var cdata = "";
+        $("input:checked[name='role_data']").each(function () {
+            cdata += $(this).attr('value') + ',';
+        });
+
+        if (cdata == "") {
+            $.messager.alert('提示信息', '请至少选中一个角色');
+            return;
+        }
+        
+        $.ajax({
+            type: 'post',
+            url: '/@ViewBag.UrlPath/UserRole/SaveData',
+            data: { chkdata: cdata, id: id },
+            success: function (r) {
+                if (r == "0") {
+                    $.messager.alert("提示信息", "分配成功", 'icon-alert', function () {
+                        $('#role').window('close');
+                        $('#mytable').datagrid('reload');
+                    });
+                } else {
+                    $.messager.alert('提示信息', r, 'icon-alert');
+                }
+            }
+        });
+    }
+    /**** 分配角色处理函数结束 ****/
 </script>
 <form>
     <table id="mytable"></table>
@@ -271,4 +328,7 @@
 <div id="win" class="easyui-window" title="新增窗口" style="width: 300px; height: 150px;
     padding: 5px;">
     
+</div>
+<!--角色窗口-->
+<div id="role" class="easyui-window" title="分配角色">
 </div>

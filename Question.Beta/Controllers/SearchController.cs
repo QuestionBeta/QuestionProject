@@ -79,7 +79,7 @@ namespace Question.Beta.Controllers
                 }
                 else
                 {
-                    bugList = bughandler.GetDataList(1, 15);
+                    bugList = bughandler.GetDataListWherePublish(1, 15);
                     ViewBag.Total = bughandler.GetDataList().Count;
                 }
             }

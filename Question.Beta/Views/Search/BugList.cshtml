@@ -10,32 +10,13 @@
     <!--引用系统样式-->
     <link type="text/css" rel="Stylesheet" href="@Url.Content("~/Content/css/bootstrap.min.css")" />
     <link type="text/css" rel="Stylesheet" href="@Url.Content("~/Content/home_common.css")" />
-    <!--引入分页脚本-->
-    <script type="text/javascript" src="@Url.Content("~/Scripts/Question/jquery-1.9.1.min.js")"></script>
-    <script type="text/javascript" src="@Url.Content("~/Scripts/Question/datapager.js")"></script>
-    <script type="text/javascript">
-        function searchClick() {
-            var id = document.getElementById("keywords").value;
-            var category = document.getElementById("category").value;
-            var url = "/Search/SearchResult";
-            if (id == '') {
-                id = 0;
-            }
-            if (category == '') {
-                category = 0;
-            }
-            url = "/Search/SearchResult/" + category + "/" + id;
-            
-            location.href = url;
-        }
-    </script>
+    <script type="text/javascript" data-main="@Url.Content("~/Scripts/Question/searchmain")" defer async="true"  src="@Url.Content("~/Content/layout/js/require.js")"></script>
     <style type="text/css">
         .bs-docs-footer
         {
             text-align: center;
             padding: 10px;
-        }
-        
+        }               
     </style>
 </head>
 <body style="background: #eaeaea">
@@ -54,7 +35,7 @@
                 </div>
             </div>
             <div style="float: left; padding: 0px 0px 0px 25px;">
-                <a href="#" class="btn btn-info" style="width: 80px" onclick="searchClick()">搜索</a>
+                <a href="javascript:void(0)" class="btn btn-info" id="btnSearch" style="width: 80px" >搜索</a>
                 <a href="/" class="btn btn-info" style="width: 80px">返回首页</a>
             </div>
         </div>
@@ -82,7 +63,7 @@
                     <div style="width: 85%; overflow: hidden; text-overflow: ellipsis; word-break: break-all;
                         padding: 0 10px; display: block">
                         <div style="line-height: 25px">
-                            <a href="@Url.Action("Detail", "Bug", new { @id = bug.id })" target="_blank">@bug.title</a></div>
+                            <a href="@Url.Action("Detail", "Bug", new { id = Html.Encrypt(bug.id.ToString()) })" target="_blank">@bug.title</a></div>
                         <div style="height: 57px; overflow: hidden; text-overflow: ellipsis; word-break: break-all;
                             display: block; word-wrap: nowrap;">
                             @bug.description

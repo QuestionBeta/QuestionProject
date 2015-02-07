@@ -14,7 +14,7 @@ namespace Shop.Web.Models
         [RegularExpression(@"^(([a-z]+|[A-Z]+)|([A-z]+|[a-z]+)).([0-9]+)", ErrorMessage = "用户名称格式错误")]
         [StringLength(18, MinimumLength = 6, ErrorMessage = "用户名称必须在6-18个字符以内")]
         [Remote("ValidateUser", "Login", HttpMethod = "POST", ErrorMessage = "该用户名已被占用")]
-        [Editable(true)]
+        [Editable(false)]
         /// <summary>
         /// 用户登录名称
         /// </summary>

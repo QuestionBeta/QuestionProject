@@ -1,5 +1,5 @@
 ﻿/* File Created: 九月 29, 2014 */
-html,body{height:100%;width:100%;margin:0;padding:0;}#popup_title{width:100%;background:#eaeaea;line-height:35px;top:0;font-size:12px;margin:0;padding:0;}#popup_panel{border-top:1px solid #eee;text-align:right;padding:5px;}#popup_content{min-height:50px;text-indent:30px;width:75%;padding:5px;}.modal-content{box-shadow:0 5px 15px rgba(0, 0, 0, 0.5);background-clip: padding-box;
+html,body{height:100%;width:100%;margin:0;padding:0; font-family: "Helvetica Neue",Helvetica,Microsoft Yahei,Hiragino Sans GB,WenQuanYi Micro Hei,sans-serif}#popup_title{width:100%;background:#eaeaea;line-height:35px;top:0;font-size:12px;margin:0;padding:0;}#popup_panel{border-top:1px solid #eee;text-align:right;padding:5px;}#popup_content{min-height:50px;text-indent:30px;width:75%;padding:5px;}.modal-content{box-shadow:0 5px 15px rgba(0, 0, 0, 0.5);background-clip: padding-box;
     background-color: #fff;
     border: 1px solid rgba(0, 0, 0, 0.2);
     border-radius: 6px;
@@ -19,4 +19,26 @@ html,body{height:100%;width:100%;margin:0;padding:0;}#popup_title{width:100%;bac
     border-top: 1px solid #e5e5e5;
     padding: 15px;
     text-align: right;
+}
+@keyframes fade-in {
+    0% {height: 0;}/*初始状态 透明度为0*/
+    40% {height: 0;}/*过渡状态 透明度为0*/
+    100% {height: 1;}/*结束状态 透明度为1*/
+    }
+    @-webkit-keyframes fade-in {/*针对webkit内核*/
+    0% {height: 0;}
+    40% {height: 0;}
+    100% {opacity: 1;}
+    }
+.animation{
+animation: fade-in;/*动画名称*/
+    animation-duration: 0.15s;/*动画持续时间*/
+    -webkit-animation:fade-in 0.1s;/*针对webkit内核*/
+    transition: opacity 0.1s linear 0s;
+}
+.popup_title_c{
+    padding: 10px;
+}
+.popup_title{
+    font-size: 16px;
 }

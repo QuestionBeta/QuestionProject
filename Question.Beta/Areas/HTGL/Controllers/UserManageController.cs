@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using Question.Beta.Controllers;
 using DataBase.AppData;
 using Shop.Web.Helper;
+using Shop.Web.Models;
 
 namespace Question.Beta.Areas.HTGL.Controllers
 {
@@ -16,6 +17,7 @@ namespace Question.Beta.Areas.HTGL.Controllers
 
         public ActionResult Index()
         {
+            ViewBag.UrlPath = PathUrl;
             return View();
         }
 
@@ -24,15 +26,57 @@ namespace Question.Beta.Areas.HTGL.Controllers
             return View();
         }
 
+        [HttpPost]
+        [AuthAttribute(Code = "all")]
         public ActionResult GetData(int? page, int? rows)
         {
+            //根据用户id获取用户当前角色
+            int currentUserId = GetCurrentUserId(HttpContext.User.Identity.Name);
+            string currentRole = GetCurrentUserRole(HttpContext.User.Identity.Name).Trim();
+
             page = page == null ? 1 : (int)page;
             rows = rows == null ? 10 : (int)rows;
-            var userList = userhandler.GetDataList(page, rows).Select(p => new { p.id, p.user_login_name,
-                p.user_name,p.user_email,p.user_pwd,
-                p.user_role,p.user_tel,p.user_nick_name,p.time,p.isopen }).ToList();
-            var j = new { total = userList.Count, rows = userList };
-            return Json(j, JsonRequestBehavior.AllowGet);
+            int count = 0;
+
+            if (currentRole != "10")
+            {
+                var userList = userhandler.GetDataList(page, rows).Where(p => p.id == currentUserId).Select(p => new
+                 {
+                     p.id,
+                     p.user_login_name,
+                     p.user_name,
+                     p.user_email,
+                     p.user_pwd,
+                     p.user_role,
+                     p.user_tel,
+                     p.user_nick_name,
+                     p.time,
+                     p.isopen
+                 }).ToList();
+                count = userList.Count;
+
+                var j = new { total = count, rows = userList };
+                return Json(j, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                var userList = userhandler.GetDataList(page, rows).Select(p => new
+                {
+                    p.id,
+                    p.user_login_name,
+                    p.user_name,
+                    p.user_email,
+                    p.user_pwd,
+                    p.user_role,
+                    p.user_tel,
+                    p.user_nick_name,
+                    p.time,
+                    p.isopen
+                }).ToList();
+                count = userList.Count;
+                var j = new { total = count, rows = userList };
+                return Json(j, JsonRequestBehavior.AllowGet);
+            }            
         }
 
         //禁用用户

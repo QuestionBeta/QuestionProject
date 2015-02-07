@@ -46,7 +46,6 @@ namespace Question.Beta.Areas.HTGL.Controllers
                     list.Add(table);
                 }
 
-
                 if (string.IsNullOrEmpty(pid))
                 {
                     ViewData["Value"] = new SelectList(list, "pid", "name");
@@ -69,59 +68,18 @@ namespace Question.Beta.Areas.HTGL.Controllers
             return list;
         }
 
-        //private void ListFilePath(string url)
-        //{
-        //    DirectoryInfo d = new DirectoryInfo(Server.MapPath("/Areas/Admin/Views"));
-        //    ArrayList list = FileManager.GetFileNameByAssembly(d);
-        //    List<GetFileModel> l = new List<GetFileModel>();
-        //    if (list != null && list.Count > 0)
-        //    {
-        //        for (int i = 0; i < list.Count; i++)
-        //        {
-        //            GetFileModel file = new GetFileModel();
-        //            file.url = list[i].ToString();
-        //            file.value = list[i].ToString();
-        //            l.Add(file);
-        //        }
-        //    }
-
-        //    if (l != null && l.Count > 0)
-        //    {
-               
-        //    }
-        //    else
-        //    {
-        //        GetFileModel table = new GetFileModel();
-        //        table.url = "";
-        //        table.value = "";
-        //        //list.Add(select);
-        //        l.Add(table);
-        //    }
-
-        //    if (string.IsNullOrEmpty(url))
-        //    {
-        //        ViewData["Url"] = new SelectList(l, "url", "value");
-        //    }
-        //    else
-        //    {
-        //        //List<GetModel> list = ListPMenu();
-        //        ViewData["Url"] = new SelectList(l, "url", "value", url);
-        //    }
-        //}
-
         public ActionResult GetData(int? page, int? rows)
         {
             page = page == null ? 1 : (int)page;
             rows = rows == null ? 10 : (int)rows;
-            List<Menu> dt = new List<Menu>();
-            dt = menuhandler.GetDataList(page, rows);
+            var dt = menuhandler.GetDataList(page, rows).Select(p => new { id = p.id, iconcls = p.iconcls, name = p.name, type = p.type, isexpand = p.isexpand, defaultvalue = p.defaultvalue, url = p.url, time = p.time, pname = p.Menu1.name }).ToList();
             int total = menuhandler.GetDataList().Count;
             var j = new { total = total, rows = dt };
             return Json(j, JsonRequestBehavior.AllowGet);
         }
 
         #region 菜单操作方法
-        public int AddMenu(string name, bool type, string url, bool? isexpand, int? pid)
+        public int AddMenu(string name, bool type, string url, bool? isexpand, int? pid, string iconcls)
         {
             Menu menu = new Menu();
             menu.name = name;
@@ -134,6 +92,7 @@ namespace Question.Beta.Areas.HTGL.Controllers
             }
             menu.time = DateTime.Now;
             menu.url = url;
+            menu.iconcls = iconcls;
             int result = -1;
             result = menuhandler.InsertDataToMenuTable(menu);
             return result;
@@ -226,7 +185,7 @@ namespace Question.Beta.Areas.HTGL.Controllers
         }
 
         [HttpPost]
-        public ActionResult SaveMenuInfo(Menu menuModel,int? pid,bool htype)
+        public ActionResult SaveMenuInfo(Menu menuModel,int? pid,bool htype, string iconcls)
         {
             var menus = menuhandler.GetDataById(menuModel.id);
             menus.type = (bool)htype;
@@ -243,6 +202,7 @@ namespace Question.Beta.Areas.HTGL.Controllers
             }
 
             menus.name = menuModel.name;
+            menus.iconcls = iconcls;
             int result = menuhandler.UpdateDataToMenuTable(menus);
             if (result == 0)
             {

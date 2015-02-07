@@ -40,10 +40,11 @@
                         { field: 'id', checkbox: true, title: '全选', width: 50 },
                         { field: 'name', title: '菜单名称', width: 200, align: 'center' },
                         { field: 'url', title: '菜单链接地址', width: 100, align: 'center' },
+                        { field: 'iconcls', title: '菜单样式', width: 200, align: 'center', formatter: function (value) { return '<span class="' + value + '"></span>' + value; } },
                         { field: 'type', title: '是否为父菜单', width: 200, align: 'center', formatter: function (value) { if (value != null) { if (value) { return '是'; } else { return '否'; } } }
                         },
                         { field: 'isexpand', title: '是否默认展开菜单', width: 200, align: 'center', formatter: function (value) { if (value != null) { if (value) { return '是'; } else { return '否'; } } } },
-                        { field: 'pid', title: '父菜单名称', width: 200, align: 'center', formatter: function (value) { if (value != null) { return value.name } } },
+                        { field: 'pname', title: '父菜单名称', width: 200, align: 'center', formatter: function (value) { if (value != null) { return value } } },
                         { field: 'time', title: '创建时间', width: 200, align: 'center', formatter: function (value) { if (value != null) { return getDateTime(value); } } },
                         { field: 'action', title: '操作', width: 200, align: 'center',
                             formatter: function (value, row, index) {
@@ -62,7 +63,7 @@
                     iconCls: 'icon-add',
                     handler: function () {
                         $('#win').find('form').remove();
-                        $("#win").load("/HTGL/Menu/UpdateMenu?type=1");
+                        $("#win").load("/htgl_bug2345/Menu/UpdateMenu?type=1");
                         $('#win').window('open');
                     }
                 }, '-', {
@@ -132,7 +133,7 @@
 
      function openEditDialog(id) {
          $("#win").find('form').remove();
-         $("#win").load("/HTGL/Menu/UpdateMenu?id=" + id + "&type=0");
+         $("#win").load("/htgl_bug2345/Menu/UpdateMenu?id=" + id + "&type=0");
          $('#win').window('open');
      }
 
